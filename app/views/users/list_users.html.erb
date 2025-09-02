@@ -1,0 +1,18 @@
+<h1>List users</h1>
+
+<table border='1'>
+	
+	<th>First name</th>
+	<th>Last name</th>
+	<th>Age</th>
+
+	<% @users.each do |user| %>
+		<tr>
+			<td><%= user.fname %></td>	
+			<td><%= user.lname %></td>	
+			<td><%= user.age %></td>	
+		</tr>
+	<% end %>
+
+</table>
+
