@@ -1,3 +1,4 @@
+<%= render "common_templates/company_name" %>
 <h1>List users</h1>
 
 <table border='1'>
@@ -6,12 +7,16 @@
 	<th>Last name</th>
 	<th>Age</th>
 
-	<% @users.each do |user| %>
-		<tr>
-			<td><%= user.fname %></td>	
-			<td><%= user.lname %></td>	
-			<td><%= user.age %></td>	
-		</tr>
+	<% if @users %>
+		<% @users.each do |user| %>
+			<tr>
+				<td><%= user.first_name %></td>	
+				<td><%= user.last_name %></td>	
+				<td><%= user.age %></td>	
+			</tr>
+		<% end %>
+	<% else %>
+		No data
 	<% end %>
 
 </table>
