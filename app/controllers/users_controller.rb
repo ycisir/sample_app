@@ -18,4 +18,28 @@ class UsersController < ApplicationController
     # redirect_to action: :list_users #
   end
 
+
+  def new_user
+    @user = User.new
+    # render "new_user1"
+  end
+
+  def create_user
+    @user = User.new(user_params)
+
+    if @user.save
+      redirect_to action: :list_users
+    else
+      render :new_user
+    end
+
+
+    # render plain: params[:user]
+
+  end
+
+  private
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :age, :city, :gender)
+  end
 end

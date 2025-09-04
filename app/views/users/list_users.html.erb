@@ -6,13 +6,26 @@
 	<th>First name</th>
 	<th>Last name</th>
 	<th>Age</th>
+	<th>City</th>
+	<th>Gender</th>
 
 	<% if @users %>
 		<% @users.each do |user| %>
 			<tr>
 				<td><%= user.first_name %></td>	
 				<td><%= user.last_name %></td>	
-				<td><%= user.age %></td>	
+				<td><%= user.age %></td>
+				<td><%= user.city %></td>
+				<!-- <td><%# user.gender %></td> -->
+
+				<%# using helper method found in app/helpers %>
+				<!-- <td><%# gender_string(user.gender) %></td> -->
+
+
+				<%# writing method in model %>
+				<%# in smaller case write it in a model %>
+				<td><%= user.gender_string %></td>
+
 			</tr>
 		<% end %>
 	<% else %>
