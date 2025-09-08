@@ -12,10 +12,10 @@
 	<% if @users %>
 		<% @users.each do |user| %>
 			<tr>
-				<td><%= user.first_name %></td>	
-				<td><%= user.last_name %></td>	
+				<td><%= user.firstname %></td>
+				<td><%= user.lastname %></td>
 				<td><%= user.age %></td>
-				<td><%= user.city %></td>
+				<td><%= user.city_name %></td>
 				<!-- <td><%# user.gender %></td> -->
 
 				<%# using helper method found in app/helpers %>

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   def list_users
     @users = User.all
   end
@@ -26,7 +27,7 @@ class UsersController < ApplicationController
 
   def create_user
     @user = User.new(user_params)
-
+    @user.name = @user.fullname # bad way
     if @user.save
       redirect_to action: :list_users
     else
@@ -40,6 +41,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :age, :city, :gender)
+    params.require(:user).permit(:first_name, :last_name, :age, :city_id, :gender)
   end
 end

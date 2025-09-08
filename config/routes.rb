@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  root "users#list_users"
   resources :products
   get "users/list_users"
   get "users/show_new_template"

@@ -25,9 +25,11 @@
 	<br><br>
 
 	<%= f.label "City" %><br>
-	<%= f.text_field :city %><br><br>
+	<%# f.text_field :city %>
+	<%# f.select :city, User::CITIES %>
+	<%= f.collection_select :city_id, City.all, :id, :name, prompt: "Please select" %><br><br>
 
-	<%# f.submit %>		
+	<%# f.submit %>
 	<%= f.submit "Add user" %>
 
 <% end %>

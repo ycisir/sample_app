@@ -7,3 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+
+
+cities = %W[London Birmingham Manchester Leeds Liverpool Newcastle Edinburgh]
+
+cities.each do |city|
+  City.create(name: city)
+end
