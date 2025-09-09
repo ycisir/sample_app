@@ -8,6 +8,7 @@ class User < ApplicationRecord
 		self.gender == "F" ? "Female" : "Male"
 	end
 
+	# this method is used to store fullname in user table name column
 	def fullname
 		self.first_name + " " + self.last_name
 	end

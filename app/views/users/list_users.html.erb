@@ -12,8 +12,10 @@
 	<% if @users %>
 		<% @users.each do |user| %>
 			<tr>
-				<td><%= user.firstname %></td>
-				<td><%= user.lastname %></td>
+				<!--<td><%# link_to user.firstname, action: :show, id: user %></td>-->
+				<td><%= link_to user.firstname, show_user_path(user) %></td>
+				<!--<td><%# link_to user.lastname, action: :show, id: user %></td>-->
+				<td><%= link_to user.lastname, show_user_path(user) %></td>
 				<td><%= user.age %></td>
 				<td><%= user.city_name %></td>
 				<!-- <td><%# user.gender %></td> -->

@@ -25,6 +25,10 @@ class UsersController < ApplicationController
     # render "new_user1"
   end
 
+  def show
+    @user = User.find(params[:id])
+  end
+
   def create_user
     @user = User.new(user_params)
     @user.name = @user.fullname # bad way

@@ -25,8 +25,16 @@
   <body>
     <h1>APPLICATION LAYOUT</h1>
     <%= current_page?(controller: :users, action: :new_user) %>
-    <%= link_to_unless_current "New user", controller: :users, action: :new_user %>
-    <%= link_to_unless_current "List users", controller: :users, action: :list_users %>
+    <%# link_to_unless_current "New user", controller: :users, action: :new_user %>
+
+    <%# relative url %>
+    <%= link_to_unless_current "New user", users_new_user_path %>
+    <%# link_to_unless_current "List users", controller: :users, action: :list_users %>
+
+    <%# absolute url means including server name  %>
+    <%= link_to_unless_current "List users", users_list_users_url %>
+
+    <%= highlight('You searched for: rails', 'rails') %>
     <%= yield %>
   </body>
 </html>
