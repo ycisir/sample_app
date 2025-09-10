@@ -35,7 +35,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to action: :list_users
     else
-      render :new_user
+      render :new_user, status: :unprocessable_entity
     end
 
 
@@ -45,6 +45,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :age, :city_id, :gender)
+    params.require(:user).permit(:first_name, :last_name, :age, :city_id, :gender, :cityname, :country)
   end
 end
