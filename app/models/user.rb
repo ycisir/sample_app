@@ -22,14 +22,9 @@ class User < ApplicationRecord
 	validate :check_unique_name
 
 	def check_unique_name
-		# exist = User.find_by_name(first_name + " " + last_name).nil? ? false : true
-		# debugger
-
-
 		if User.exists?(name:[firstname, lastname].join(" "))
 			self.errors.add(:name, "already taken choose another")
 		end
-
 	end
 
 

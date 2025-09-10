@@ -1,0 +1,1278 @@
+sample-app(dev)> User.first
+  User Load (2.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d270c2b558
+ id: 13,
+ age: 18,
+ created_at: "2025-09-08 10:04:17.827306000 +0000",
+ updated_at: "2025-09-08 10:12:19.484951000 +0000",
+ points: nil,
+ gender: "F",
+ name: "Ginny Weasely",
+ city_id: nil>
+sample-app(dev)> User.first 3
+  User Load (1.6ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 3 /*application='SampleApp'*/
+=> 
+=> 
+[#<User:0x000073d270c25b58
+  id: 13,
+  age: 18,
+  created_at: "2025-09-08 10:04:17.827306000 +0000",
+  updated_at: "2025-09-08 10:12:19.484951000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c25a18
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+:...skipping...
+=> 
+[#<User:0x000073d270c25b58
+  id: 13,
+  age: 18,
+  created_at: "2025-09-08 10:04:17.827306000 +0000",
+  updated_at: "2025-09-08 10:12:19.484951000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c25a18
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d270c258d8
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+(END)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=> 
+[#<User:0x000073d270c25b58
+  id: 13,
+  age: 18,
+  created_at: "2025-09-08 10:04:17.827306000 +0000",
+  updated_at: "2025-09-08 10:12:19.484951000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c25a18
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d270c258d8
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+sample-app(dev)> User.first 3
+  User Load (1.6ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 3 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27120af00
+  id: 13,
+  age: 18,
+  created_at: "2025-09-08 10:04:17.827306000 +0000",
+  updated_at: "2025-09-08 10:12:19.484951000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d27120adc0
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d27120ac80
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)> User.last 3
+  User Load (1.9ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT 3 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270c28c18
+  id: 26,
+  age: 18,
+  created_at: "2025-09-10 15:14:16.632227000 +0000",
+  updated_at: "2025-09-10 15:14:16.632227000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 1>,
+ #<User:0x000073d270c28d58
+  id: 27,
+  age: nil,
+  created_at: "2025-09-10 15:19:50.590308000 +0000",
+  updated_at: "2025-09-10 15:19:50.590308000 +0000",
+  points: nil,
+  gender: nil,
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c28e98
+  id: 28,
+  age: nil,
+  created_at: "2025-09-10 15:22:41.410363000 +0000",
+  updated_at: "2025-09-10 15:22:41.410363000 +0000",
+  points: nil,
+  gender: nil,
+  name: " ",
+  city_id: nil>]
+sample-app(dev)> User.find_by_name("Harry Potter")
+  User Load (2.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d270c2f3d8
+ id: 15,
+ age: 19,
+ created_at: "2025-09-08 10:05:04.229901000 +0000",
+ updated_at: "2025-09-08 10:12:19.489544000 +0000",
+ points: nil,
+ gender: "M",
+ name: "Harry Potter",
+ city_id: nil>
+sample-app(dev)> User.find_by_name_and_age("Harry Potter", 19)
+  User Load (1.8ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' AND "users"."age" = 19 LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d270c23718
+ id: 15,
+ age: 19,
+ created_at: "2025-09-08 10:05:04.229901000 +0000",
+ updated_at: "2025-09-08 10:12:19.489544000 +0000",
+ points: nil,
+ gender: "M",
+ name: "Harry Potter",
+ city_id: nil>
+sample-app(dev)> User.find_by_name_and_age("Harry Potter", 20)
+  User Load (1.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' AND "users"."age" = 20 LIMIT 1 /*application='SampleApp'*/
+=> nil
+sample-app(dev)> User.find_by_name_and_age_and_gender("Harry Potter", 19, "F")
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' AND "users"."age" = 19 AND "users"."gender" = 'F' LIMIT 1 /*application='SampleApp'*/
+=> nil
+sample-app(dev)> User.find_by_name_and_age_and_gender("Harry Potter", 19, "M")
+  User Load (1.3ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' AND "users"."age" = 19 AND "users"."gender" = 'M' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d273c116a0
+ id: 15,
+ age: 19,
+ created_at: "2025-09-08 10:05:04.229901000 +0000",
+ updated_at: "2025-09-08 10:12:19.489544000 +0000",
+ points: nil,
+ gender: "M",
+ name: "Harry Potter",
+ city_id: nil>
+sample-app(dev)> User.where(name: "Harry Potter")
+  User Load (1.5ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2703bbf58
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)> User.where(name: "Harry Potterr")
+  User Load (1.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potterr' /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> User.where(name: "Harry Potterr").class
+=> User::ActiveRecord_Relation
+sample-app(dev)> User.find_by_name_and_age_and_gender("Harry Potter", 19, "M").class
+  User Load (1.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' AND "users"."age" = 19 AND "users"."gender" = 'M' LIMIT 1 /*application='SampleApp'*/
+=> User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer)
+sample-app(dev)> User.where(name: "Harry Potterr").class
+=> User::ActiveRecord_Relation
+sample-app(dev)> User.find_by_name_and_age_and_gender("Harry Potter", 19, "F").class
+  User Load (1.3ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' AND "users"."age" = 19 AND "users"."gender" = 'F' LIMIT 1 /*application='SampleApp'*/
+=> NilClass
+sample-app(dev)> User.count
+  User Count (7.3ms)  SELECT COUNT(*) FROM "users" /*application='SampleApp'*/
+=> 15
+sample-app(dev)> User.where(age: 19).count
+  User Count (1.5ms)  SELECT COUNT(*) FROM "users" WHERE "users"."age" = 19 /*application='SampleApp'*/
+=> 4
+sample-app(dev)> nineteen =  User.where(age: 19)
+  User Load (1.4ms)  SELECT "users".* FROM "users" WHERE "users"."age" = 19 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27036e258
+...
+sample-app(dev)> nineteen.all
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."age" = 19 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27037a008
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d270379ec8
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d270379d88
+  id: 23,
+  age: 19,
+  created_at: "2025-09-09 16:16:39.444481000 +0000",
+  updated_at: "2025-09-09 16:16:39.444481000 +0000",
+  points: nil,
+  gender: nil,
+  name: "Test Test",
+  city_id: 1>,
+ #<User:0x000073d270379c48
+  id: 24,
+  age: 19,
+  created_at: "2025-09-09 16:44:24.474231000 +0000",
+  updated_at: "2025-09-09 16:44:24.474231000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>]
+sample-app(dev)> tmp =  User.where(age: )
+(sample-app):23:in `<main>': undefined local variable or method `age' for main (NameError)
+
+tmp =  User.where(age: )
+                  ^^^^
+sample-app(dev)> tmp =  User.where(age: 0)
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."age" = 0 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> tmp =  User.where(name: "Test")
+  User Load (1.5ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Test' /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> tmp =  User.where(name: "Test Test")
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Test Test' /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27037b048
+...
+sample-app(dev)> tmp.count
+  User Count (1.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."name" = 'Test Test' /*application='SampleApp'*/
+=> 4
+sample-app(dev)> tmp.destroy
+(sample-app):28:in `<main>': wrong number of arguments (given 0, expected 1) (ArgumentError)
+sample-app(dev)> tmp.destroy_all
+  User Load (1.5ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Test Test' /*application='SampleApp'*/
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (7.8ms)  DELETE FROM "users" WHERE "users"."id" = 20 /*application='SampleApp'*/
+  TRANSACTION (5.6ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (2.5ms)  DELETE FROM "users" WHERE "users"."id" = 21 /*application='SampleApp'*/
+  TRANSACTION (1.3ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (2.2ms)  DELETE FROM "users" WHERE "users"."id" = 22 /*application='SampleApp'*/
+  TRANSACTION (1.4ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (2.0ms)  DELETE FROM "users" WHERE "users"."id" = 23 /*application='SampleApp'*/
+  TRANSACTION (1.3ms)  COMMIT /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27038b920
+  id: 20,
+  age: 44,
+  created_at: "2025-09-08 15:49:06.177062000 +0000",
+  updated_at: "2025-09-08 15:49:06.177062000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Test Test",
+  city_id: nil>,
+ #<User:0x000073d27038b7e0
+  id: 21,
+  age: 44,
+  created_at: "2025-09-08 15:50:11.439583000 +0000",
+  updated_at: "2025-09-08 15:50:11.439583000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Test Test",
+  city_id: 1>,
+ #<User:0x000073d27038b6a0
+  id: 22,
+  age: 55,
+  created_at: "2025-09-08 15:52:02.012605000 +0000",
+  updated_at: "2025-09-08 15:52:02.012605000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Test Test",
+  city_id: 7>,
+ #<User:0x000073d27038b560
+  id: 23,
+  age: 19,
+  created_at: "2025-09-09 16:16:39.444481000 +0000",
+  updated_at: "2025-09-09 16:16:39.444481000 +0000",
+  points: nil,
+  gender: nil,
+  name: "Test Test",
+  city_id: 1>]
+sample-app(dev)> User.count
+  User Count (1.3ms)  SELECT COUNT(*) FROM "users" /*application='SampleApp'*/
+=> 11
+sample-app(dev)> User.last.delete
+  User Load (2.2ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT 1 /*application='SampleApp'*/
+  User Destroy (5.6ms)  DELETE FROM "users" WHERE "users"."id" = 28 /*application='SampleApp'*/
+=> 
+#<User:0x000073d27038d5e0
+ id: 28,
+ age: nil,
+ created_at: "2025-09-10 15:22:41.410363000 +0000",
+ updated_at: "2025-09-10 15:22:41.410363000 +0000",
+ points: nil,
+ gender: nil,
+ name: " ",
+ city_id: nil>
+sample-app(dev)> tmp = User.where(name: "Ginny Weasely", city_id: 1)
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Ginny Weasely' AND "users"."city_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270380020
+...
+sample-app(dev)> tmp.count
+  User Count (1.6ms)  SELECT COUNT(*) FROM "users" WHERE "users"."name" = 'Ginny Weasely' AND "users"."city_id" = 1 /*application='SampleApp'*/
+=> 1
+sample-app(dev)> tmp.destroy
+(sample-app):34:in `<main>': wrong number of arguments (given 0, expected 1) (ArgumentError)
+sample-app(dev)> tmp.destroy_all
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Ginny Weasely' AND "users"."city_id" = 1 /*application='SampleApp'*/
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (3.0ms)  DELETE FROM "users" WHERE "users"."id" = 26 /*application='SampleApp'*/
+  TRANSACTION (1.4ms)  COMMIT /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270383d60
+  id: 26,
+  age: 18,
+  created_at: "2025-09-10 15:14:16.632227000 +0000",
+  updated_at: "2025-09-10 15:14:16.632227000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 1>]
+sample-app(dev)> tmp = User.where(name: "jacky test", city_id: nil)
+  User Load (1.7ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'jacky test' AND "users"."city_id" IS NULL /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27038eee0
+...
+sample-app(dev)> tmp
+  User Load (1.5ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'jacky test' AND "users"."city_id" IS NULL /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2703871e0
+  id: 25,
+  age: 22,
+  created_at: "2025-09-09 16:47:38.236918000 +0000",
+  updated_at: "2025-09-09 16:47:38.236918000 +0000",
+  points: nil,
+  gender: "F",
+  name: "jacky test",
+  city_id: nil>]
+sample-app(dev)> tmp.destroy_all
+  User Load (1.3ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'jacky test' AND "users"."city_id" IS NULL /*application='SampleApp'*/
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (2.3ms)  DELETE FROM "users" WHERE "users"."id" = 25 /*application='SampleApp'*/
+  TRANSACTION (13.5ms)  COMMIT /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2703816a0
+  id: 25,
+  age: 22,
+  created_at: "2025-09-09 16:47:38.236918000 +0000",
+  updated_at: "2025-09-09 16:47:38.236918000 +0000",
+  points: nil,
+  gender: "F",
+  name: "jacky test",
+  city_id: nil>]
+sample-app(dev)> tmp = User.where(name: "Ginny Weasely", city_id: nil)
+  User Load (1.5ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Ginny Weasely' AND "users"."city_id" IS NULL /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2703921d0
+...
+sample-app(dev)> tmp
+  User Load (1.6ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Ginny Weasely' AND "users"."city_id" IS NULL /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2703a0b40
+  id: 13,
+  age: 18,
+  created_at: "2025-09-08 10:04:17.827306000 +0000",
+  updated_at: "2025-09-08 10:12:19.484951000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d2703a0a00
+  id: 24,
+  age: 19,
+  created_at: "2025-09-09 16:44:24.474231000 +0000",
+  updated_at: "2025-09-09 16:44:24.474231000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d2703a08c0
+  id: 27,
+  age: nil,
+  created_at: "2025-09-10 15:19:50.590308000 +0000",
+  updated_at: "2025-09-10 15:19:50.590308000 +0000",
+  points: nil,
+  gender: nil,
+  name: "Ginny Weasely",
+  city_id: nil>]
+sample-app(dev)> tmp.destroy_all
+  User Load (1.3ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Ginny Weasely' AND "users"."city_id" IS NULL /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (2.2ms)  DELETE FROM "users" WHERE "users"."id" = 13 /*application='SampleApp'*/
+  TRANSACTION (13.2ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (1.9ms)  DELETE FROM "users" WHERE "users"."id" = 24 /*application='SampleApp'*/
+  TRANSACTION (1.2ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.5ms)  BEGIN /*application='SampleApp'*/
+  User Destroy (1.6ms)  DELETE FROM "users" WHERE "users"."id" = 27 /*application='SampleApp'*/
+  TRANSACTION (1.2ms)  COMMIT /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270c2b418
+  id: 13,
+  age: 18,
+  created_at: "2025-09-08 10:04:17.827306000 +0000",
+  updated_at: "2025-09-08 10:12:19.484951000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c2b2d8
+  id: 24,
+  age: 19,
+  created_at: "2025-09-09 16:44:24.474231000 +0000",
+  updated_at: "2025-09-09 16:44:24.474231000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c2b198
+  id: 27,
+  age: nil,
+  created_at: "2025-09-10 15:19:50.590308000 +0000",
+  updated_at: "2025-09-10 15:19:50.590308000 +0000",
+  points: nil,
+  gender: nil,
+  name: "Ginny Weasely",
+  city_id: nil>]
+sample-app(dev)> User.where.not(age:18)
+  User Load (1.7ms)  SELECT "users".* FROM "users" WHERE "users"."age" != 18 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27038c1e0
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d27038c0a0
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d27038bf60
+  id: 16,
+  age: 20,
+  created_at: "2025-09-08 10:05:20.859826000 +0000",
+  updated_at: "2025-09-08 10:12:19.491196000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Ron Weasely",
+  city_id: nil>,
+ #<User:0x000073d27038be20
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where('age > ?',19) 
+  User Load (2.2ms)  SELECT "users".* FROM "users" WHERE (age > 19) /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27037e748
+  id: 16,
+  age: 20,
+  created_at: "2025-09-08 10:05:20.859826000 +0000",
+  updated_at: "2025-09-08 10:12:19.491196000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Ron Weasely",
+  city_id: nil>,
+ #<User:0x000073d27037d848
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where('age > ? and gender = ?', 19, 'F')
+  User Load (1.8ms)  SELECT "users".* FROM "users" WHERE (age > 19 and gender = 'F') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> User.where('age > ? and gender = ?', 19, 'M')
+  User Load (2.4ms)  SELECT "users".* FROM "users" WHERE (age > 19 and gender = 'M') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270c2af18
+  id: 16,
+  age: 20,
+  created_at: "2025-09-08 10:05:20.859826000 +0000",
+  updated_at: "2025-09-08 10:12:19.491196000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Ron Weasely",
+  city_id: nil>,
+ #<User:0x000073d270c2ac98
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where('age > ? and gender = ?', 18, 'F')
+  User Load (1.9ms)  SELECT "users".* FROM "users" WHERE (age > 18 and gender = 'F') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27038e8a0
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>]
+sample-app(dev)> User.where('name like ?', "%Ron%")
+  User Load (6.7ms)  SELECT "users".* FROM "users" WHERE (name like '%Ron%') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2700a5008
+  id: 16,
+  age: 20,
+  created_at: "2025-09-08 10:05:20.859826000 +0000",
+  updated_at: "2025-09-08 10:12:19.491196000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Ron Weasely",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%")
+  User Load (2.3ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2700afdc8
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d2700afc88
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d2700afb48
+  id: 17,
+  age: 18,
+  created_at: "2025-09-08 10:05:46.766873000 +0000",
+  updated_at: "2025-09-08 10:12:19.492856000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Luna Lovegood",
+  city_id: nil>,
+ #<User:0x000073d2700afa08
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>,
+ #<User:0x000073d2700af8c8
+  id: 29,
+  age: 18,
+  created_at: "2025-09-10 15:48:14.240716000 +0000",
+  updated_at: "2025-09-10 15:48:14.240716000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 2>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age)
+  User Load (2.4ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2700b5b60
+  id: 17,
+  age: 18,
+  created_at: "2025-09-08 10:05:46.766873000 +0000",
+  updated_at: "2025-09-08 10:12:19.492856000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Luna Lovegood",
+  city_id: nil>,
+ #<User:0x000073d2700b5a20
+  id: 29,
+  age: 18,
+  created_at: "2025-09-10 15:48:14.240716000 +0000",
+  updated_at: "2025-09-10 15:48:14.240716000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 2>,
+ #<User:0x000073d2700b58e0
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d2700b57a0
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d2700b5660
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order('age DESC')
+  User Load (2.5ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY age DESC LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27039d990
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>,
+ #<User:0x000073d27039d850
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d27039d710
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d27039d5d0
+  id: 17,
+  age: 18,
+  created_at: "2025-09-08 10:05:46.766873000 +0000",
+  updated_at: "2025-09-08 10:12:19.492856000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Luna Lovegood",
+  city_id: nil>,
+ #<User:0x000073d27039d490
+  id: 29,
+  age: 18,
+  created_at: "2025-09-10 15:48:14.240716000 +0000",
+  updated_at: "2025-09-10 15:48:14.240716000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 2>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age).limit(6)
+  User Load (2.2ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 6 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270c22818
+  id: 17,
+  age: 18,
+  age: 18,
+  created_at: "2025-09-08 10:05:46.766873000 +0000",
+  updated_at: "2025-09-08 10:12:19.492856000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Luna Lovegood",
+  city_id: nil>,
+ #<User:0x000073d270c226d8
+  id: 29,
+  age: 18,
+  created_at: "2025-09-10 15:48:14.240716000 +0000",
+  updated_at: "2025-09-10 15:48:14.240716000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 2>,
+ #<User:0x000073d270c22598
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d270c22458
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d270c22318
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age).limit(4)
+  User Load (2.1ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 4 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d273c1b560
+  id: 17,
+  age: 18,
+  created_at: "2025-09-08 10:05:46.766873000 +0000",
+  updated_at: "2025-09-08 10:12:19.492856000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Luna Lovegood",
+  city_id: nil>,
+ #<User:0x000073d273c1b420
+  id: 29,
+  age: 18,
+  created_at: "2025-09-10 15:48:14.240716000 +0000",
+  updated_at: "2025-09-10 15:48:14.240716000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 2>,
+ #<User:0x000073d273c1b2e0
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d273c1b1a0
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age).limit(4).offset(2)
+  User Load (1.9ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 4 OFFSET 2 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d273c09b08
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d273c099c8
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d273c09888
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age).limit(4)
+  User Load (2.5ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 4 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27009e618
+  id: 17,
+  age: 18,
+  created_at: "2025-09-08 10:05:46.766873000 +0000",
+  updated_at: "2025-09-08 10:12:19.492856000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Luna Lovegood",
+  city_id: nil>,
+ #<User:0x000073d27009e4d8
+  id: 29,
+  age: 18,
+  created_at: "2025-09-10 15:48:14.240716000 +0000",
+  updated_at: "2025-09-10 15:48:14.240716000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Ginny Weasely",
+  city_id: 2>,
+ #<User:0x000073d27009e398
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d27009e258
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age).limit(4).offset(2)
+  User Load (2.1ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 4 OFFSET 2 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270373488
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d270373348
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>,
+ #<User:0x000073d270373208
+  id: 19,
+  age: 21,
+  created_at: "2025-09-08 10:29:22.823500000 +0000",
+  updated_at: "2025-09-08 10:29:22.823500000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Long Bottom",
+  city_id: nil>]
+sample-app(dev)> User.where.not('name like ?', "%Ron%").order(:age).limit(2).offset(2)
+  User Load (2.2ms)  SELECT "users".* FROM "users" WHERE NOT ((name like '%Ron%')) /* loading for pp */ ORDER BY "users"."age" ASC LIMIT 2 OFFSET 2 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270085140
+  id: 14,
+  age: 19,
+  created_at: "2025-09-08 10:04:38.018138000 +0000",
+  updated_at: "2025-09-08 10:12:19.487880000 +0000",
+  points: nil,
+  gender: "F",
+  name: "Hermone Granger",
+  city_id: nil>,
+ #<User:0x000073d270085000
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)>
+
+sample-app(dev)> car = [100, 350, 99, 150]
+=> [100, 350, 99, 150]
+sample-app(dev)> car.sum
+=> 699
+sample-app(dev)> age = [18, 19, 19, 21, 25, 17, 17]
+=> [18, 19, 19, 21, 25, 17, 17]
+sample-app(dev)> age.group_by
+=> #<Enumerator: ...>
+sample-app(dev)> group_by(age)
+(sample-app):95:in `<main>': undefined method `group_by' for main (NoMethodError)
+
+group_by(age)
+^^^^^^^^
+sample-app(dev)> group_by(:age)
+(sample-app):96:in `<main>': undefined method `group_by' for main (NoMethodError)
+
+group_by(:age)
+^^^^^^^^
+sample-app(dev)> group(:age)
+(sample-app):97:in `<main>': undefined method `group' for main (NoMethodError)
+
+group(:age)
+^^^^^
+sample-app(dev)> age.group
+(sample-app):98:in `<main>': undefined method `group' for an instance of Array (NoMethodError)
+
+age.group
+   ^^^^^^
+Did you mean?  group_by
+sample-app(dev)> User.group(:age)
+  User Load (103.1ms)  SELECT "users".* FROM "users" GROUP BY "users"."age" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+An error occurred when inspecting the object: #<ActiveRecord::StatementInvalid:"PG::GroupingError: ERROR:  column \"users.id\" must appear in the GROUP BY clause or be used in an aggregate function\nLINE 1: SELECT \"users\".* FROM \"users\" GROUP BY \"users\".\"age\" /* load...\n               ^\n">
+Result of Kernel#inspect: #<User::ActiveRecord_Relation:0x000073d270128980 @model=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @table=#<Arel::Table:0x000073d2711eeb20 @name="users", @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @type_caster=#<ActiveRecord::TypeCaster::Map:0x000073d2714c3710 @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer)>, @table_alias=nil>, @values={:group=>[:age]}, @loaded=nil, @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 @table=#<ActiveRecord::TableMetadata:0x000073d2714d8070 @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @arel_table=#<Arel::Table:0x000073d2711eeb20 @name="users", @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @type_caster=#<ActiveRecord::TypeCaster::Map:0x000073d2714c3710 @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer)>, @table_alias=nil>, @reflection=nil>, @handlers=[[Set, #<ActiveRecord::PredicateBuilder::ArrayHandler:0x000073d2714d75f8 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>], [Array, #<ActiveRecord::PredicateBuilder::ArrayHandler:0x000073d2714d78f0 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>], [ActiveRecord::Relation, #<ActiveRecord::PredicateBuilder::RelationHandler:0x000073d2714d7b20>], [Range, #<ActiveRecord::PredicateBuilder::RangeHandler:0x000073d2714d7c60 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>], [BasicObject, #<ActiveRecord::PredicateBuilder::BasicObjectHandler:0x000073d2714d7df0 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>]]>, @delegate_to_model=false, @future_result=nil, @records=nil, @async=false, @none=false, @should_eager_load=nil, @arel=nil, @to_sql=nil, @take=nil, @offsets=nil, @cache_keys=nil, @cache_versions=nil>
+=> 
+sample-app(dev)> User.group(:name)
+  User Load (2.6ms)  SELECT "users".* FROM "users" GROUP BY "users"."name" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+An error occurred when inspecting the object: #<ActiveRecord::StatementInvalid:"PG::GroupingError: ERROR:  column \"users.id\" must appear in the GROUP BY clause or be used in an aggregate function\nLINE 1: SELECT \"users\".* FROM \"users\" GROUP BY \"users\".\"name\" /* loa...\n               ^\n">
+Result of Kernel#inspect: #<User::ActiveRecord_Relation:0x000073d27012c6c0 @model=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @table=#<Arel::Table:0x000073d2711eeb20 @name="users", @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @type_caster=#<ActiveRecord::TypeCaster::Map:0x000073d2714c3710 @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer)>, @table_alias=nil>, @values={:group=>[:name]}, @loaded=nil, @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 @table=#<ActiveRecord::TableMetadata:0x000073d2714d8070 @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @arel_table=#<Arel::Table:0x000073d2711eeb20 @name="users", @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer), @type_caster=#<ActiveRecord::TypeCaster::Map:0x000073d2714c3710 @klass=User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer)>, @table_alias=nil>, @reflection=nil>, @handlers=[[Set, #<ActiveRecord::PredicateBuilder::ArrayHandler:0x000073d2714d75f8 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>], [Array, #<ActiveRecord::PredicateBuilder::ArrayHandler:0x000073d2714d78f0 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>], [ActiveRecord::Relation, #<ActiveRecord::PredicateBuilder::RelationHandler:0x000073d2714d7b20>], [Range, #<ActiveRecord::PredicateBuilder::RangeHandler:0x000073d2714d7c60 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>], [BasicObject, #<ActiveRecord::PredicateBuilder::BasicObjectHandler:0x000073d2714d7df0 @predicate_builder=#<ActiveRecord::PredicateBuilder:0x000073d2714d7f80 ...>>]]>, @delegate_to_model=false, @future_result=nil, @records=nil, @async=false, @none=false, @should_eager_load=nil, @arel=nil, @to_sql=nil, @take=nil, @offsets=nil, @cache_keys=nil, @cache_versions=nil>
+=> 
+sample-app(dev)> User.pluck(:age)
+  User Pluck (1.8ms)  SELECT "users"."age" FROM "users" /*application='SampleApp'*/
+=> [19, 19, 20, 18, 21, 18]
+sample-app(dev)> User.pluck(:name)
+  User Pluck (1.2ms)  SELECT "users"."name" FROM "users" /*application='SampleApp'*/
+=> ["Hermone Granger", "Harry Potter", "Ron Weasely", "Luna Lovegood", "Long Bottom", "Ginny Weasely"]
+sample-app(dev)> User.select(:name)
+  User Load (1.3ms)  SELECT "users"."name" FROM "users" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27009f158 name: "Hermone Granger", id: nil>,
+ #<User:0x000073d27009f018 name: "Harry Potter", id: nil>,
+ #<User:0x000073d27009eed8 name: "Ron Weasely", id: nil>,
+ #<User:0x000073d27009ed98 name: "Luna Lovegood", id: nil>,
+ #<User:0x000073d27009ec58 name: "Long Bottom", id: nil>,
+ #<User:0x000073d27009eb18 name: "Ginny Weasely", id: nil>]
+sample-app(dev)> User.select(:name, :age)
+  User Load (1.1ms)  SELECT "users"."name", "users"."age" FROM "users" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d270080b40 name: "Hermone Granger", age: 19, id: nil>,
+ #<User:0x000073d270080a00 name: "Harry Potter", age: 19, id: nil>,
+ #<User:0x000073d2700808c0 name: "Ron Weasely", age: 20, id: nil>,
+ #<User:0x000073d270080780 name: "Luna Lovegood", age: 18, id: nil>,
+ #<User:0x000073d270080640 name: "Long Bottom", age: 21, id: nil>,
+ #<User:0x000073d270080500 name: "Ginny Weasely", age: 18, id: nil>]
+sample-app(dev)> User.select(:id, :name, :age)
+  User Load (1.3ms)  SELECT "users"."id", "users"."name", "users"."age" FROM "users" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27009e618 id: 14, name: "Hermone Granger", age: 19>,
+ #<User:0x000073d27009e4d8 id: 15, name: "Harry Potter", age: 19>,
+ #<User:0x000073d27009e258 id: 16, name: "Ron Weasely", age: 20>,
+ #<User:0x000073d27009a018 id: 17, name: "Luna Lovegood", age: 18>,
+ #<User:0x000073d270096058 id: 19, name: "Long Bottom", age: 21>,
+ #<User:0x000073d270095f18 id: 29, name: "Ginny Weasely", age: 18>]
+sample-app(dev)> User.select(:age)
+  User Load (1.2ms)  SELECT "users"."age" FROM "users" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27009fdd8 age: 19, id: nil>,
+ #<User:0x000073d27009fb58 age: 19, id: nil>,
+ #<User:0x000073d27009fa18 age: 20, id: nil>,
+ #<User:0x000073d27009f8d8 age: 18, id: nil>,
+ #<User:0x000073d27009f798 age: 21, id: nil>,
+ #<User:0x000073d27009f658 age: 18, id: nil>]
+sample-app(dev)> User.select(:gender)
+  User Load (1.7ms)  SELECT "users"."gender" FROM "users" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d27009d498 gender: "F", id: nil>,
+ #<User:0x000073d27009d358 gender: "M", id: nil>,
+ #<User:0x000073d27009d218 gender: "M", id: nil>,
+ #<User:0x000073d27009d0d8 gender: "F", id: nil>,
+ #<User:0x000073d27009cf98 gender: "M", id: nil>,
+ #<User:0x000073d27009ce58 gender: "F", id: nil>]
+sample-app(dev)> User.average(:age)
+  User Average (7.1ms)  SELECT AVG("users"."age") FROM "users" /*application='SampleApp'*/
+=> 0.191666666666666667e2
+sample-app(dev)> User.maximum(:age)
+  User Maximum (2.9ms)  SELECT MAX("users"."age") FROM "users" /*application='SampleApp'*/
+=> 21
+sample-app(dev)> User.minimum(:age)
+  User Minimum (2.1ms)  SELECT MIN("users"."age") FROM "users" /*application='SampleApp'*/
+=> 18
+sample-app(dev)> User.where(age: 19).explain
+  User Load (1.9ms)  SELECT "users".* FROM "users" WHERE "users"."age" = 19 /*application='SampleApp'*/
+=> 
+EXPLAIN SELECT "users".* FROM "users" WHERE "users"."age" = 19 /*application='SampleApp'*/
+                      QUERY PLAN
+------------------------------------------------------
+ Seq Scan on users  (cost=0.00..1.07 rows=2 width=49)
+   Filter: (age = 19)
+(2 rows)
+
+sample-app(dev)> hermoine = User.first
+  User Load (2.0ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d2700af3c8
+...
+sample-app(dev)> hermoine
+=> 
+#<User:0x000073d2700af3c8
+ id: 14,
+ age: 19,
+ created_at: "2025-09-08 10:04:38.018138000 +0000",
+ updated_at: "2025-09-08 10:12:19.487880000 +0000",
+ points: nil,
+ gender: "F",
+ name: "Hermone Granger",
+ city_id: nil>
+sample-app(dev)> hermoine.class
+=> User(id: integer, age: integer, created_at: datetime, updated_at: datetime, points: integer, gender: string, name: string, city_id: integer)
+sample-app(dev)> hermoine.update_attribute(city_id: 5)
+(sample-app):115:in `<main>': wrong number of arguments (given 1, expected 2) (ArgumentError)
+sample-app(dev)> hermoine.update_attribute(:city_id, 5)
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  User Update (3.0ms)  UPDATE "users" SET "updated_at" = '2025-09-10 16:41:17.580493', "city_id" = 5 WHERE "users"."id" = 14 /*application='SampleApp'*/
+  TRANSACTION (5.0ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> User.where('name like ?', "%harry%").explain
+  User Load (2.6ms)  SELECT "users".* FROM "users" WHERE (name like '%harry%') /*application='SampleApp'*/
+=> 
+EXPLAIN SELECT "users".* FROM "users" WHERE (name like '%harry%') /*application='SampleApp'*/
+                      QUERY PLAN
+------------------------------------------------------
+ Seq Scan on users  (cost=0.00..1.07 rows=1 width=49)
+   Filter: ((name)::text ~~ '%harry%'::text)
+(2 rows)
+
+sample-app(dev)> User.where('name like ?', "%harry%")
+  User Load (1.9ms)  SELECT "users".* FROM "users" WHERE (name like '%harry%') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> User.where('name like ?', "%Harry%")
+  User Load (2.0ms)  SELECT "users".* FROM "users" WHERE (name like '%Harry%') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2700ab188
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)> User.where('name like ?', "%Harry%").expalin
+(sample-app):120:in `<main>': undefined method `expalin' for an instance of ActiveRecord::Relation (NoMethodError)
+Did you mean?  explain
+sample-app(dev)> User.where('name like ?', "%Harry%").explain
+  User Load (2.0ms)  SELECT "users".* FROM "users" WHERE (name like '%Harry%') /*application='SampleApp'*/
+=> 
+EXPLAIN SELECT "users".* FROM "users" WHERE (name like '%Harry%') /*application='SampleApp'*/
+                      QUERY PLAN
+------------------------------------------------------
+ Seq Scan on users  (cost=0.00..1.07 rows=1 width=49)
+   Filter: ((name)::text ~~ '%Harry%'::text)
+(2 rows)
+
+sample-app(dev)> harry = User.where('name like ?', "%Harry%")
+  User Load (2.2ms)  SELECT "users".* FROM "users" WHERE (name like '%Harry%') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2700abcc8
+...
+sample-app(dev)> harry
+  User Load (2.1ms)  SELECT "users".* FROM "users" WHERE (name like '%Harry%') /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<User:0x000073d2700ba660
+  id: 15,
+  age: 19,
+  created_at: "2025-09-08 10:05:04.229901000 +0000",
+  updated_at: "2025-09-08 10:12:19.489544000 +0000",
+  points: nil,
+  gender: "M",
+  name: "Harry Potter",
+  city_id: nil>]
+sample-app(dev)> harry.update(city_id: 6)
+  User Load (2.0ms)  SELECT "users".* FROM "users" WHERE (name like '%Harry%') /*application='SampleApp'*/
+app/models/user.rb:25:in `check_unique_name': undefined method `+' for nil (NoMethodError)
+  from (sample-app):124:in `<main>'
+sample-app(dev)> harry = User.find_by_name("Harry Potter")
+  User Load (2.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Harry Potter' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d2700a6f48
+...
+sample-app(dev)> harry.update_attribute(:city_id, 6)
+  TRANSACTION (1.0ms)  BEGIN /*application='SampleApp'*/
+  User Update (3.1ms)  UPDATE "users" SET "updated_at" = '2025-09-10 16:45:14.976895', "city_id" = 6 WHERE "users"."id" = 15 /*application='SampleApp'*/
+  TRANSACTION (5.2ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> ron = User.first
+  User Load (2.0ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d2700ac948
+...
+sample-app(dev)> ron
+=> 
+#<User:0x000073d2700ac948
+ id: 14,
+ age: 19,
+ created_at: "2025-09-08 10:04:38.018138000 +0000",
+ updated_at: "2025-09-10 16:41:17.580493000 +0000",
+ points: nil,
+ gender: "F",
+ name: "Hermone Granger",
+ city_id: 5>
+sample-app(dev)> ron = User.find_by_name("Ron Weasely")
+  User Load (1.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Ron Weasely' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<User:0x000073d2700b9620
+...
+sample-app(dev)> ron
+=> 
+#<User:0x000073d2700b9620
+ id: 16,
+ age: 20,
+ created_at: "2025-09-08 10:05:20.859826000 +0000",
+ updated_at: "2025-09-08 10:12:19.491196000 +0000",
+ points: nil,
+ gender: "M",
+ name: "Ron Weasely",
+ city_id: nil>
+sample-app(dev)> ron.update_attribute(:city_id, 2)
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  User Update (2.6ms)  UPDATE "users" SET "updated_at" = '2025-09-10 16:48:04.983805', "city_id" = 2 WHERE "users"."id" = 16 /*application='SampleApp'*/
+  TRANSACTION (13.3ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> harry
+=> 
+#<User:0x000073d2700a6f48
+ id: 15,
+ age: 19,
+ created_at: "2025-09-08 10:05:04.229901000 +0000",
+ updated_at: "2025-09-10 16:45:14.976895000 +0000",
+ points: nil,
+ gender: "M",
+ name: "Harry Potter",
+ city_id: 6>
+sample-app(dev)> user = User.new
+=> #<User:0x000073d27009fa18 id: nil, age: nil, created_at: nil, updated_at: nil, points: nil, gender: nil, name: nil, city_id: nil>
+sample-app(dev)> user.save
+app/models/user.rb:25
