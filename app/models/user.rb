@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+
+	has_one :address, as: :addressable, dependent: :destroy
+
+
 	# validates_length_of :first_name, in: (10..20)
 	attr_accessor :first_name, :last_name, :cityname, :country
 

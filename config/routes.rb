@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :addresses
 
   root "users#list_users"
   resources :products

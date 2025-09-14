@@ -1,0 +1,1503 @@
+user and comments - (one - many)
+user and banks - (one - one)
+developers and projects - (many - many)
+
+
+
+(one - many)
+
+user			comments
+=====			==========
+id				id
+name			text
+				user_id
+
+
+
+
+1 user1			1 text1 3
+2 user2			2 text2 3
+3 user3			3 text2 1
+
+
+
+
+
+ORM - Object relation mapping between Model and Database rails uses (Active Record)
+relate using associations
+
+
+
+association in rails (advantages)
+=======================================
+
+lots of auto generated methods
+simple dynamic methods for the developer for associated objs
+clear OOPS concepts
+
+
+
+
+
+available associations in rails
+======================================
+one - one relation between 2 rails models -> has_one
+one - many relation between 2 rails models -> has_many
+many - many relation between 2 rails models -> has_and_belongs_to_many
+many - many relation between 2 rails models -> has_many through:
+1 - n model relations - polymorphic association
+
+
+
+
+
+
+
+
+example
+====================
+
+resellers
+manufacturers
+products
+
+
+1 - manufacturers - products
+has_many
+
+2 - manufacturers - resellers
+has_and_belongs_to_many
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+yasir>> 
+yasir>> rails g model Manufacturer name:string
+starting ...............................	
+      invoke  active_record
+      create    db/migrate/20250911135842_create_manufacturers.rb
+      create    app/models/manufacturer.rb
+      invoke    test_unit
+      create      test/models/manufacturer_test.rb
+      create      test/fixtures/manufacturers.yml
+yasir>> rails g model Reseller name:string
+starting ...............................	
+      invoke  active_record
+      create    db/migrate/20250911135916_create_resellers.rb
+      create    app/models/reseller.rb
+      invoke    test_unit
+      create      test/models/reseller_test.rb
+      create      test/fixtures/resellers.yml
+yasir>> rails db:migrate
+starting ...............................	
+== 20250911135842 CreateManufacturers: migrating ==============================
+-- create_table(:manufacturers)
+   -> 0.0398s
+== 20250911135842 CreateManufacturers: migrated (0.0401s) =====================
+
+== 20250911135916 CreateResellers: migrating ==================================
+-- create_table(:resellers)
+   -> 0.0195s
+== 20250911135916 CreateResellers: migrated (0.0196s) =========================
+
+yasir>> rails g migration add_manufacturer_id_to_products manufacturer_id:integer
+starting ...............................	
+      invoke  active_record
+      create    db/migrate/20250911162822_add_manufacturer_id_to_products.rb
+yasir>> rails db:migrate
+starting ...............................	
+== 20250911162822 AddManufacturerIdToProducts: migrating ======================
+-- add_column(:products, :manufacturer_id, :integer)
+   -> 0.0058s
+== 20250911162822 AddManufacturerIdToProducts: migrated (0.0059s) =============
+
+yasir>> rails c
+starting ...............................	
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> Manufacturer.count
+  Manufacturer Count (134.0ms)  SELECT COUNT(*) FROM "manufacturers" /*application='SampleApp'*/
+=> 0
+sample-app(dev)> Reseller.count
+  Reseller Count (2.5ms)  SELECT COUNT(*) FROM "resellers" /*application='SampleApp'*/
+=> 0
+sample-app(dev)> Product.count
+  Product Count (6.4ms)  SELECT COUNT(*) FROM "products" /*application='SampleApp'*/
+=> 0
+sample-app(dev)> Manufacturer.create(name: "Toyota")
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer Create (3.2ms)  INSERT INTO "manufacturers" ("name") VALUES ('Toyota') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (12.0ms)  COMMIT /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b9913f0b158 id: 1, name: "Toyota">
+sample-app(dev)> Manufacturer.create(name: "Honda")
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer Create (3.1ms)  INSERT INTO "manufacturers" ("name") VALUES ('Honda') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.5ms)  COMMIT /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b99186644c8 id: 2, name: "Honda">
+sample-app(dev)> Product.column_names
+=> ["id", "name", "model", "price", "created_at", "updated_at", "manufacturer_id"]
+sample-app(dev)> Product.create(name: "Civic", model: "XE", manufacturer_id: 2)
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  Product Create (7.6ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Civic', 'XE', NULL, '2025-09-11 16:31:48.260999', '2025-09-11 16:31:48.260999', 2) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.4ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x00007b9913f05bb8
+ id: 1,
+ name: "Civic",
+ model: "XE",
+ price: nil,
+ created_at: "2025-09-11 16:31:48.260999000 +0000",
+ updated_at: "2025-09-11 16:31:48.260999000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> ci = Product.first
+  Product Load (2.2ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x00007b991335bce0
+...
+sample-app(dev)> ci
+=> 
+#<Product:0x00007b991335bce0
+ id: 1,
+ name: "Civic",
+ model: "XE",
+ price: nil,
+ created_at: "2025-09-11 16:31:48.260999000 +0000",
+ updated_at: "2025-09-11 16:31:48.260999000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> ci.update_attribute(:price, 10000)
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Product Update (4.6ms)  UPDATE "products" SET "price" = 10000.0, "updated_at" = '2025-09-11 16:32:33.974516' WHERE "products"."id" = 1 /*application='SampleApp'*/
+  TRANSACTION (1.6ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> Product.create(name: "Corolla", model: "XSE", price: 8000, manufacturer_id: 1)
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  Product Create (2.6ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Corolla', 'XSE', 8000.0, '2025-09-11 16:33:34.715594', '2025-09-11 16:33:34.715594', 1) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.3ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x00007b99132abe08
+ id: 2,
+ name: "Corolla",
+ model: "XSE",
+ price: 8000.0,
+ created_at: "2025-09-11 16:33:34.715594000 +0000",
+ updated_at: "2025-09-11 16:33:34.715594000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> Product.create(name: "Accord", model: "XL", price: 8000, manufacturer_id: 2)
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Product Create (2.9ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Accord', 'XL', 8000.0, '2025-09-11 16:35:07.245347', '2025-09-11 16:35:07.245347', 2) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.2ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x00007b99132a5788
+ id: 3,
+ name: "Accord",
+ model: "XL",
+ price: 8000.0,
+ created_at: "2025-09-11 16:35:07.245347000 +0000",
+ updated_at: "2025-09-11 16:35:07.245347000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> Product.create(name: "Camry", model: "GT", price: 20000, manufacturer_id: 1)
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Product Create (2.7ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Camry', 'GT', 20000.0, '2025-09-11 16:35:36.122093', '2025-09-11 16:35:36.122093', 1) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (5.1ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x00007b99133a9120
+ id: 4,
+ name: "Camry",
+ model: "GT",
+ price: 20000.0,
+ created_at: "2025-09-11 16:35:36.122093000 +0000",
+ updated_at: "2025-09-11 16:35:36.122093000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> Product.find_by_sql("select * from products where products.manufacturer_id = 1")
+  Product Load (94.7ms)  select * from products where products.manufacturer_id = 1 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b991328e880
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x00007b991328e740
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> toyota = Manufacturer.find 1
+  Manufacturer Load (1.2ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b99134dbcc8 id: 1, name: "Toyota">
+sample-app(dev)> toyota.product
+  Product Load (1.9ms)  select * from products where products.manufacturer_id = 1 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b99136c5908
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x00007b9913477ef8
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> toyota = Manufacturer.find 1
+  Manufacturer Load (0.8ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b9913402d38 id: 1, name: "Toyota">
+sample-app(dev)> toyota.products
+  Product Load (0.9ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b991824d808
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x00007b991347e078
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> toyota.products.class
+=> Product::ActiveRecord_Associations_CollectionProxy
+sample-app(dev)> Product.find_by_sql("select * from products where products.manufacturer_id = 1")
+  Product Load (1.3ms)  select * from products where products.manufacturer_id = 1 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b99132aa508
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x00007b99132aa3c8
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> Product.find_by_sql("select * from products where products.manufacturer_id = 1").class
+  Product Load (1.9ms)  select * from products where products.manufacturer_id = 1 /*application='SampleApp'*/
+=> Array
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> toyota.products
+  Product Load (1.4ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b9913297958
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x00007b9913297818
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> toyota = Manufacturer.find 1
+  Manufacturer Load (1.3ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b991368cce8 id: 1, name: "Toyota">
+sample-app(dev)> toyota.products
+  Product Load (1.2ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b99134bb298
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x00007b9918336af8
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> honda = Manufacturer.find 2
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 2 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b9913346188 id: 2, name: "Honda">
+sample-app(dev)> honda.products
+  Product Load (1.5ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x00007b991329ac98
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x00007b991329ab58
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>]
+sample-app(dev)> civic = Product.find_by_name(name: "Civic")
+(sample-app):31:in `<main>': can't quote Hash (TypeError)
+
+        else raise TypeError, "can't quote #{value.class.name}"
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sample-app(dev)> civic = Product.find_by_name("Civic")
+  Product Load (2.0ms)  SELECT "products".* FROM "products" WHERE "products"."name" = 'Civic' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x00007b9913344248
+...
+sample-app(dev)> civic
+=> 
+#<Product:0x00007b9913344248
+ id: 1,
+ name: "Civic",
+ model: "XE",
+ price: 10000.0,
+ created_at: "2025-09-11 16:31:48.260999000 +0000",
+ updated_at: "2025-09-11 16:32:33.974516000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> civic.manufacturer_id
+=> 2
+sample-app(dev)> civic.manufacturer
+(sample-app):35:in `<main>': undefined method `manufacturer' for an instance of Product (NoMethodError)
+Did you mean?  manufacturer_id
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> civic.manufacturer
+(sample-app):37:in `<main>': undefined method `manufacturer' for an instance of Product (NoMethodError)
+Did you mean?  manufacturer_id
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> civic = Product.find_by_name("Civic")
+  Product Load (0.8ms)  SELECT "products".* FROM "products" WHERE "products"."name" = 'Civic' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x00007b991828b888
+...
+sample-app(dev)> civic.manufacturer
+  Manufacturer Load (0.8ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 2 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007b991359a0d8 id: 2, name: "Honda">
+sample-app(dev)> exit
+yasir>> rails c
+starting ...............................	
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> civic = Product.find_by_name("Civic")
+  Product Load (0.8ms)  SELECT "products".* FROM "products" WHERE "products"."name" = 'Civic' LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x0000789cb5a93330
+...
+sample-app(dev)> civic
+=> 
+#<Product:0x0000789cb5a93330
+ id: 1,
+ name: "Civic",
+ model: "XE",
+ price: 10000.0,
+ created_at: "2025-09-11 16:31:48.260999000 +0000",
+ updated_at: "2025-09-11 16:32:33.974516000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> civic.manufacturer
+  Manufacturer Load (1.4ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 2 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x0000789cb594d430 id: 2, name: "Honda">
+sample-app(dev)> honda = civic.manufacturer
+=> #<Manufacturer:0x0000789cb594d430 id: 2, name: "Honda">
+sample-app(dev)> honda
+=> #<Manufacturer:0x0000789cb594d430 id: 2, name: "Honda">
+sample-app(dev)> honda.products
+  Product Load (1.2ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb598c810
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x0000789cb598c6d0
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>]
+sample-app(dev)> honda
+=> #<Manufacturer:0x0000789cb594d430 id: 2, name: "Honda">
+sample-app(dev)> honda.products
+  Product Load (92.3ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb4e8e8a0
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x0000789cb4e8e760
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>]
+sample-app(dev)> crv = Product.create(name: "CRV")
+=> #<Product:0x0000789cb5981910 id: nil, name: "CRV", model: nil, price: nil, created_at: nil, updated_at: nil, manufacturer_id: nil>
+sample-app(dev)> honda.products << crv
+  TRANSACTION (1.2ms)  BEGIN /*application='SampleApp'*/
+  Product Create (4.3ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('CRV', NULL, NULL, '2025-09-11 17:24:29.932982', '2025-09-11 17:24:29.932982', 2) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.7ms)  COMMIT /*application='SampleApp'*/
+  Product Load (1.2ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb5987f90
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x0000789cb5987e50
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x0000789cb5987d10
+  id: 5,
+  name: "CRV",
+  model: nil,
+  price: nil,
+  created_at: "2025-09-11 17:24:29.932982000 +0000",
+  updated_at: "2025-09-11 17:24:29.932982000 +0000",
+  manufacturer_id: 2>]
+sample-app(dev)> honda.products.empty?
+=> false
+sample-app(dev)> honda.products.size
+  Product Count (1.8ms)  SELECT COUNT(*) FROM "products" WHERE "products"."manufacturer_id" = 2 /*application='SampleApp'*/
+=> 3
+sample-app(dev)> honda.products.exists?(crv)
+(sample-app):13:in `<main>': You are passing an instance of ActiveRecord::Base to `exists?`. Please pass the id of the object by calling `.id`. (ArgumentError)
+
+        raise ArgumentError, <<-MSG.squish
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sample-app(dev)> honda.products.exists?(civic.id)
+  Product Exists? (2.3ms)  SELECT 1 AS one FROM "products" WHERE "products"."manufacturer_id" = 2 AND "products"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> true
+sample-app(dev)> toyota = Manufacturer.find 1
+  Manufacturer Load (2.3ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x0000789cb598af10 id: 1, name: "Toyota">
+sample-app(dev)> toyota.products.find 1
+  Product Load (1.5ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 AND "products"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+(sample-app):16:in `<main>': Couldn't find Product with 'id'=1 [WHERE "products"."manufacturer_id" = $1] (ActiveRecord::RecordNotFound)
+sample-app(dev)> toyota.products.find 2
+  Product Load (1.4ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 AND "products"."id" = 2 LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x0000789cb5bb4390
+ id: 2,
+ name: "Corolla",
+ model: "XSE",
+ price: 8000.0,
+ created_at: "2025-09-11 16:33:34.715594000 +0000",
+ updated_at: "2025-09-11 16:33:34.715594000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> fortuner = toyota.products.build(name: "Fortuner", price: 30000)
+=> #<Product:0x0000789cb5bb6f50 id: nil, name: "Fortuner", model: nil, price: 30000.0, created_at: nil, updated_at: nil, manufacturer_id: 1>
+sample-app(dev)> fortuner.errors
+=> #<ActiveModel::Errors []>
+sample-app(dev)> fortuner.save
+  TRANSACTION (1.0ms)  BEGIN /*application='SampleApp'*/
+  Product Create (3.2ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Fortuner', NULL, 30000.0, '2025-09-11 17:29:34.931584', '2025-09-11 17:29:34.931584', 1) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.6ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> toyota.products.last
+  Product Load (2.2ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x0000789cb4b32580
+ id: 6,
+ name: "Fortuner",
+ model: nil,
+ price: 30000.0,
+ created_at: "2025-09-11 17:29:34.931584000 +0000",
+ updated_at: "2025-09-11 17:29:34.931584000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> toyota.products
+  Product Load (1.6ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb5bb1190
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb5bb1050
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb5bb0dd0
+  id: 6,
+  name: "Fortuner",
+  model: nil,
+  price: 30000.0,
+  created_at: "2025-09-11 17:29:34.931584000 +0000",
+  updated_at: "2025-09-11 17:29:34.931584000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> city = toyota.products.build(name: "City", model: "LT" ,price: 15000)
+=> #<Product:0x0000789cd4f685d0 id: nil, name: "City", model: "LT", price: 15000.0, created_at: nil, updated_at: nil, manufacturer_id: 1>
+sample-app(dev)> city.save
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  Product Create (3.1ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('City', 'LT', 15000.0, '2025-09-11 17:36:56.577482', '2025-09-11 17:36:56.577482', 1) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.6ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> toyota.products
+  Product Load (2.2ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb49ed5d0
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb49ed490
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb49ed350
+  id: 6,
+  name: "Fortuner",
+  model: nil,
+  price: 30000.0,
+  created_at: "2025-09-11 17:29:34.931584000 +0000",
+  updated_at: "2025-09-11 17:29:34.931584000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb49ed210
+  id: 7,
+  name: "City",
+  model: "LT",
+  price: 15000.0,
+  created_at: "2025-09-11 17:36:56.577482000 +0000",
+  updated_at: "2025-09-11 17:36:56.577482000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> city = honda.products.build(name: "City", model: "LT" ,price: 15000)
+=> #<Product:0x0000789cb4af85d8 id: nil, name: "City", model: "LT", price: 15000.0, created_at: nil, updated_at: nil, manufacturer_id: 2>
+sample-app(dev)> city.save
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Product Create (2.8ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('City', 'LT', 15000.0, '2025-09-11 17:38:09.930928', '2025-09-11 17:38:09.930928', 2) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (6.6ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> toyota.products.last.destroy
+  Product Load (2.1ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+  TRANSACTION (1.1ms)  BEGIN /*application='SampleApp'*/
+  Product Destroy (4.9ms)  DELETE FROM "products" WHERE "products"."id" = 7 /*application='SampleApp'*/
+  TRANSACTION (15.5ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x0000789cb49caa08
+ id: 7,
+ name: "City",
+ model: "LT",
+ price: 15000.0,
+ created_at: "2025-09-11 17:36:56.577482000 +0000",
+ updated_at: "2025-09-11 17:36:56.577482000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> toyota.products
+  Product Load (1.7ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb49a5a00
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb49a58c0
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb49a5780
+  id: 6,
+  name: "Fortuner",
+  model: nil,
+  price: 30000.0,
+  created_at: "2025-09-11 17:29:34.931584000 +0000",
+  updated_at: "2025-09-11 17:29:34.931584000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> toyota.products.last.destroy
+  Product Load (1.5ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  Product Destroy (2.0ms)  DELETE FROM "products" WHERE "products"."id" = 6 /*application='SampleApp'*/
+  TRANSACTION (14.7ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x0000789cb49bbcd8
+ id: 6,
+ name: "Fortuner",
+ model: nil,
+ price: 30000.0,
+ created_at: "2025-09-11 17:29:34.931584000 +0000",
+ updated_at: "2025-09-11 17:29:34.931584000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> toyota.products.build(name: "Land Cruiser", model: "XU" ,price: 45000)
+=> #<Product:0x0000789cb4b32a80 id: nil, name: "Land Cruiser", model: "XU", price: 45000.0, created_at: nil, updated_at: nil, manufacturer_id: 1>
+sample-app(dev)> toyota.products.create(name: "Land Cruiser", model: "XU" ,price: 45000)
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Product Create (2.7ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Land Cruiser', 'XU', 45000.0, '2025-09-11 17:39:58.594023', '2025-09-11 17:39:58.594023', 1) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.4ms)  COMMIT /*application='SampleApp'*/
+=> 
+#<Product:0x0000789cb4a06e18
+ id: 9,
+ name: "Land Cruiser",
+ model: "XU",
+ price: 45000.0,
+ created_at: "2025-09-11 17:39:58.594023000 +0000",
+ updated_at: "2025-09-11 17:39:58.594023000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> toyota.products
+  Product Load (1.3ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 1 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000789cb49aadc0
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb49aac80
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb4a06e18
+  id: 9,
+  name: "Land Cruiser",
+  model: "XU",
+  price: 45000.0,
+  created_at: "2025-09-11 17:39:58.594023000 +0000",
+  updated_at: "2025-09-11 17:39:58.594023000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x0000789cb4b32a80 id: nil, name: "Land Cruiser", model: "XU", price: 45000.0, created_at: nil, updated_at: nil, manufacturer_id: 1>]
+sample-app(dev)>
+
+
+
+yasir>> rails c
+starting ...............................  
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> Product.all
+  Product Load (113.8ms)  SELECT "products".* FROM "products" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x000075dd54c6a3e8
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e976c0
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd54e97580
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e97440
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd54e97300
+  id: 5,
+  name: "CRV",
+  model: nil,
+  price: nil,
+  created_at: "2025-09-11 17:24:29.932982000 +0000",
+  updated_at: "2025-09-11 17:24:29.932982000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e971c0
+  id: 8,
+Preparing full inspection value...
+=> 
+[#<Product:0x000075dd54c6a3e8
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e976c0
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd54e97580
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e97440
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd54e97300
+  id: 5,
+  name: "CRV",
+  model: nil,
+  price: nil,
+  created_at: "2025-09-11 17:24:29.932982000 +0000",
+  updated_at: "2025-09-11 17:24:29.932982000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e971c0
+  id: 8,
+  name: "City",
+  model: "LT",
+  price: 15000.0,
+  created_at: "2025-09-11 17:38:09.930928000 +0000",
+  updated_at: "2025-09-11 17:38:09.930928000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd54e97080
+  id: 9,
+  name: "Land Cruiser",
+  model: "XU",
+  price: 45000.0,
+  created_at: "2025-09-11 17:39:58.594023000 +0000",
+  updated_at: "2025-09-11 17:39:58.594023000 +0000",
+  manufacturer_id: 1>]
+sample-app(dev)> lc = Product.find 9
+  Product Load (0.6ms)  SELECT "products".* FROM "products" WHERE "products"."id" = 9 LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x000075dd54ed7450
+...
+sample-app(dev)> lc
+=> 
+#<Product:0x000075dd54ed7450
+ id: 9,
+ name: "Land Cruiser",
+ model: "XU",
+ price: 45000.0,
+ created_at: "2025-09-11 17:39:58.594023000 +0000",
+ updated_at: "2025-09-11 17:39:58.594023000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> lc.manufacturer
+  Manufacturer Load (1.6ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000075dd56b959c0 id: 1, name: "Toyota">
+sample-app(dev)> honda = Manufacturer.find 2
+  Manufacturer Load (1.0ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 2 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000075dd54e97e40 id: 2, name: "Honda">
+sample-app(dev)> lc.manufacturer=honda
+=> #<Manufacturer:0x000075dd54e97e40 id: 2, name: "Honda">
+sample-app(dev)> lc
+=> 
+#<Product:0x000075dd54ed7450
+ id: 9,
+ name: "Land Cruiser",
+ model: "XU",
+ price: 45000.0,
+ created_at: "2025-09-11 17:39:58.594023000 +0000",
+ updated_at: "2025-09-11 17:39:58.594023000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> toyota = Manufacturer.find 1
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 1 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000075dd54e96cc0 id: 1, name: "Toyota">
+sample-app(dev)> lc.manufacturer=toyota
+=> #<Manufacturer:0x000075dd54e96cc0 id: 1, name: "Toyota">
+sample-app(dev)> lc
+=> 
+#<Product:0x000075dd54ed7450
+ id: 9,
+ name: "Land Cruiser",
+ model: "XU",
+ price: 45000.0,
+ created_at: "2025-09-11 17:39:58.594023000 +0000",
+ updated_at: "2025-09-11 17:39:58.594023000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> lc
+=> 
+#<Product:0x000075dd54ed7450
+ id: 9,
+ name: "Land Cruiser",
+ model: "XU",
+ price: 45000.0,
+ created_at: "2025-09-11 17:39:58.594023000 +0000",
+ updated_at: "2025-09-11 17:39:58.594023000 +0000",
+ manufacturer_id: 1>
+sample-app(dev)> lc.manufacturer=honda
+=> #<Manufacturer:0x000075dd54e97e40 id: 2, name: "Honda">
+sample-app(dev)> lc
+=> 
+#<Product:0x000075dd54ed7450
+ id: 9,
+ name: "Land Cruiser",
+ model: "XU",
+ price: 45000.0,
+ created_at: "2025-09-11 17:39:58.594023000 +0000",
+ updated_at: "2025-09-11 17:39:58.594023000 +0000",
+ manufacturer_id: 2>
+sample-app(dev)> lc.save
+  TRANSACTION (0.4ms)  BEGIN /*application='SampleApp'*/
+  Product Update (6.3ms)  UPDATE "products" SET "updated_at" = '2025-09-13 12:31:20.166703', "manufacturer_id" = 2 WHERE "products"."id" = 9 /*application='SampleApp'*/
+  TRANSACTION (5.9ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> lc.manufacturer=toyota
+=> #<Manufacturer:0x000075dd54e96cc0 id: 1, name: "Toyota">
+sample-app(dev)> lc.save
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Product Update (3.1ms)  UPDATE "products" SET "updated_at" = '2025-09-13 12:31:42.003437', "manufacturer_id" = 1 WHERE "products"."id" = 9 /*application='SampleApp'*/
+  TRANSACTION (9.8ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> seltos = Product.new(name: "Seltos", model: "XT", price: 15000)
+=> #<Product:0x000075dd54137598 id: nil, name: "Seltos", model: "XT", price: 15000.0, created_at: nil, updated_at: nil, manufacturer_id: nil>
+sample-app(dev)> kia = seltos.build_manufacturer(name: "KIA")
+=> #<Manufacturer:0x000075dd54122940 id: nil, name: "KIA">
+sample-app(dev)> seltos.save
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer Create (6.5ms)  INSERT INTO "manufacturers" ("name") VALUES ('KIA') RETURNING "id" /*application='SampleApp'*/
+  Product Create (0.9ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Seltos', 'XT', 15000.0, '2025-09-13 12:44:01.340046', '2025-09-13 12:44:01.340046', 3) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (5.3ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> Manufacturer.all
+  Manufacturer Load (1.0ms)  SELECT "manufacturers".* FROM "manufacturers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000075dd4ff39740 id: 1, name: "Toyota">, #<Manufacturer:0x000075dd4ff39600 id: 2, name: "Honda">, #<Manufacturer:0x000075dd4ff394c0 id: 3, name: "KIA">]
+sample-app(dev)> Product.all
+  Product Load (1.0ms)  SELECT "products".* FROM "products" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x000075dd4ff39380
+  id: 1,
+  name: "Civic",
+  model: "XE",
+  price: 10000.0,
+  created_at: "2025-09-11 16:31:48.260999000 +0000",
+  updated_at: "2025-09-11 16:32:33.974516000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd4ff39240
+  id: 2,
+  name: "Corolla",
+  model: "XSE",
+  price: 8000.0,
+  created_at: "2025-09-11 16:33:34.715594000 +0000",
+  updated_at: "2025-09-11 16:33:34.715594000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd4ff39100
+  id: 3,
+  name: "Accord",
+  model: "XL",
+  price: 8000.0,
+  created_at: "2025-09-11 16:35:07.245347000 +0000",
+  updated_at: "2025-09-11 16:35:07.245347000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd4ff38fc0
+  id: 4,
+  name: "Camry",
+  model: "GT",
+  price: 20000.0,
+  created_at: "2025-09-11 16:35:36.122093000 +0000",
+  updated_at: "2025-09-11 16:35:36.122093000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd4ff38e80
+  id: 5,
+  name: "CRV",
+  model: nil,
+  price: nil,
+  created_at: "2025-09-11 17:24:29.932982000 +0000",
+  updated_at: "2025-09-11 17:24:29.932982000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd4ff38d40
+  id: 8,
+  name: "City",
+  model: "LT",
+  price: 15000.0,
+  created_at: "2025-09-11 17:38:09.930928000 +0000",
+  updated_at: "2025-09-11 17:38:09.930928000 +0000",
+  manufacturer_id: 2>,
+ #<Product:0x000075dd4ff38c00
+  id: 9,
+  name: "Land Cruiser",
+  model: "XU",
+  price: 45000.0,
+  created_at: "2025-09-11 17:39:58.594023000 +0000",
+  updated_at: "2025-09-13 12:31:42.003437000 +0000",
+  manufacturer_id: 1>,
+ #<Product:0x000075dd4ff38ac0
+  id: 10,
+  name: "Seltos",
+  model: "XT",
+  price: 15000.0,
+  created_at: "2025-09-13 12:44:01.340046000 +0000",
+  updated_at: "2025-09-13 12:44:01.340046000 +0000",
+  manufacturer_id: 3>]
+sample-app(dev)> swift = Product.build(name: "Swift", model: "LDI", price: 13000)
+=> #<Product:0x000075dd4fdce888 id: nil, name: "Swift", model: "LDI", price: 13000.0, created_at: nil, updated_at: nil, manufacturer_id: nil>
+sample-app(dev)> suzuki = swift.build_manufacturer(name: "Suzuki")
+=> #<Manufacturer:0x000075dd4fdcaa08 id: nil, name: "Suzuki">
+sample-app(dev)> swift.new_record?
+=> true
+sample-app(dev)> swift.persisted?
+=> false
+sample-app(dev)> swift.errors
+=> #<ActiveModel::Errors []>
+sample-app(dev)> swift.save
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer Create (1.9ms)  INSERT INTO "manufacturers" ("name") VALUES ('Suzuki') RETURNING "id" /*application='SampleApp'*/
+  Product Create (0.5ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Swift', 'LDI', 13000.0, '2025-09-13 12:46:41.593208', '2025-09-13 12:46:41.593208', 4) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (4.7ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> Manufacturer.all
+  Manufacturer Load (1.7ms)  SELECT "manufacturers".* FROM "manufacturers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Manufacturer:0x000075dd4fdcb548 id: 1, name: "Toyota">,
+ #<Manufacturer:0x000075dd4fdcb408 id: 2, name: "Honda">,
+ #<Manufacturer:0x000075dd4fdcb2c8 id: 3, name: "KIA">,
+ #<Manufacturer:0x000075dd4fdcb188 id: 4, name: "Suzuki">]
+sample-app(dev)> Product.last
+  Product Load (2.3ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x000075dd4fddf520
+ id: 11,
+ name: "Swift",
+ model: "LDI",
+ price: 13000.0,
+ created_at: "2025-09-13 12:46:41.593208000 +0000",
+ updated_at: "2025-09-13 12:46:41.593208000 +0000",
+ manufacturer_id: 4>
+sample-app(dev)> kia
+=> #<Manufacturer:0x000075dd54122940 id: 3, name: "KIA">
+sample-app(dev)> kia.products
+  Product Load (0.5ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 3 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x000075dd4fdd43a0
+  id: 10,
+  name: "Seltos",
+  model: "XT",
+  price: 15000.0,
+  created_at: "2025-09-13 12:44:01.340046000 +0000",
+  updated_at: "2025-09-13 12:44:01.340046000 +0000",
+  manufacturer_id: 3>]
+sample-app(dev)> kia
+=> #<Manufacturer:0x000075dd54122940 id: 3, name: "KIA">
+sample-app(dev)> sonata = kia.products.build(name: "Sonate", model: "XT", price: 17000)
+=> #<Product:0x000075dd4fdd44e0 id: nil, name: "Sonate", model: "XT", price: 17000.0, created_at: nil, updated_at: nil, manufacturer_id: 3>
+sample-app(dev)> Product.last
+  Product Load (1.2ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x000075dd4fdd6ce0
+ id: 11,
+ name: "Swift",
+ model: "LDI",
+ price: 13000.0,
+ created_at: "2025-09-13 12:46:41.593208000 +0000",
+ updated_at: "2025-09-13 12:46:41.593208000 +0000",
+ manufacturer_id: 4>
+sample-app(dev)> kia.save
+  TRANSACTION (0.5ms)  BEGIN /*application='SampleApp'*/
+  Product Create (1.6ms)  INSERT INTO "products" ("name", "model", "price", "created_at", "updated_at", "manufacturer_id") VALUES ('Sonate', 'XT', 17000.0, '2025-09-13 13:18:01.290214', '2025-09-13 13:18:01.290214', 3) RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (12.8ms)  COMMIT /*application='SampleApp'*/
+=> true
+sample-app(dev)> Manufacturer.last
+  Manufacturer Load (2.0ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000075dd4fdda160 id: 4, name: "Suzuki">
+sample-app(dev)> Manufacturer.last 2
+  Manufacturer Load (0.8ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 2 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000075dd4fdd2e60 id: 3, name: "KIA">, #<Manufacturer:0x000075dd4fdd2fa0 id: 4, name: "Suzuki">]
+sample-app(dev)> Product.last
+  Product Load (1.5ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x000075dd4fdd35e0
+ id: 12,
+ name: "Sonate",
+ model: "XT",
+ price: 17000.0,
+ created_at: "2025-09-13 13:18:01.290214000 +0000",
+ updated_at: "2025-09-13 13:18:01.290214000 +0000",
+ manufacturer_id: 3>
+sample-app(dev)> exit
+yasir>> rails c
+starting ...............................  
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> Product.last
+  Product Load (0.5ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> 
+#<Product:0x00007783ac4c5fe8
+ id: 12,
+ name: "Sonate",
+ model: "XT",
+ price: 17000.0,
+ created_at: "2025-09-13 13:18:01.290214000 +0000",
+ updated_at: "2025-09-13 13:18:01.290214000 +0000",
+ manufacturer_id: 3>
+sample-app(dev)> Manufacturer.last 2
+  Manufacturer Load (0.4ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 2 /*application='SampleApp'*/
+=> [#<Manufacturer:0x00007783ac5f8ac8 id: 3, name: "KIA">, #<Manufacturer:0x00007783ac363970 id: 4, name: "Suzuki">]
+sample-app(dev)> exit
+yasir>> rails c
+starting ...............................  
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> kia = Manufacturer.find 3
+  Manufacturer Load (0.4ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 3 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x0000708f899b38e8 id: 3, name: "KIA">
+sample-app(dev)> kia.products
+  Product Load (0.5ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 3 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Product:0x0000708f8a2eb780
+  id: 10,
+  name: "Seltos",
+  model: "XT",
+  price: 15000.0,
+  created_at: "2025-09-13 12:44:01.340046000 +0000",
+  updated_at: "2025-09-13 12:44:01.340046000 +0000",
+  manufacturer_id: 3>,
+ #<Product:0x0000708f8a8d1230
+  id: 12,
+  name: "Sonate",
+  model: "XT",
+  price: 17000.0,
+  created_at: "2025-09-13 13:18:01.290214000 +0000",
+  updated_at: "2025-09-13 13:18:01.290214000 +0000",
+  manufacturer_id: 3>]
+sample-app(dev)> kia.destroy
+  TRANSACTION (0.5ms)  BEGIN /*application='SampleApp'*/
+  Product Load (1.4ms)  SELECT "products".* FROM "products" WHERE "products"."manufacturer_id" = 3 /*application='SampleApp'*/
+  Product Destroy (0.5ms)  DELETE FROM "products" WHERE "products"."id" = 10 /*application='SampleApp'*/
+  Product Destroy (0.3ms)  DELETE FROM "products" WHERE "products"."id" = 12 /*application='SampleApp'*/
+  Manufacturer Destroy (0.4ms)  DELETE FROM "manufacturers" WHERE "manufacturers"."id" = 3 /*application='SampleApp'*/
+  TRANSACTION (12.9ms)  COMMIT /*application='SampleApp'*/
+=> #<Manufacturer:0x0000708f899b38e8 id: 3, name: "KIA">
+sample-app(dev)> kia
+=> #<Manufacturer:0x0000708f899b38e8 id: 3, name: "KIA">
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> kia
+=> #<Manufacturer:0x0000708f899b38e8 id: 3, name: "KIA">
+sample-app(dev)> Manufacturer.last 2
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 2 /*application='SampleApp'*/
+=> [#<Manufacturer:0x0000708f8a5539a0 id: 2, name: "Honda">, #<Manufacturer:0x0000708f897c1878 id: 4, name: "Suzuki">]
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> reload!
+Reloading...
+=> nil
+sample-app(dev)> kia
+=> #<Manufacturer:0x0000708f899b38e8 id: 3, name: "KIA">
+sample-app(dev)> 
+sample-app(dev)> 
+sample-app(dev)> 
+sample-app(dev)> 
+sample-app(dev)> 
+sample-app(dev)> 
+sample-app(dev)> 
+sample-app(dev)> Manufacturer.find 3
+  Manufacturer Load (0.5ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 3 LIMIT 1 /*application='SampleApp'*/
+(sample-app):18:in `<main>': Couldn't find Manufacturer with 'id'=3 (ActiveRecord::RecordNotFound)
+sample-app(dev)> exit
+yasir>> rails g migration create_join_table_resellers_manufacturers reseller_id:integer manufacturer_id:integer
+starting ...............................  
+      invoke  active_record
+      create    db/migrate/20250913133622_create_join_table_resellers_manufacturers.rb
+yasir>> rails db:migrate
+starting ...............................  
+== 20250913133622 CreateJoinTableResellersManufacturers: migrating ============
+-- create_join_table(:resellers, :manufacturers)
+   -> 0.0125s
+== 20250913133622 CreateJoinTableResellersManufacturers: migrated (0.0126s) ===
+
+yasir>> rails c
+starting ...............................  
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> Reseller.column_names
+=> ["id", "name"]
+sample-app(dev)* 3.times do |x|
+sample-app(dev)*   Reseller.create(name: "Reseller#{x}")
+sample-app(dev)> end
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (8.9ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller0') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.6ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.5ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (1.9ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller1') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.5ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (2.0ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller2') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.5ms)  COMMIT /*application='SampleApp'*/
+=> 3
+sample-app(dev)> Reseller.all
+  Reseller Load (1.4ms)  SELECT "resellers".* FROM "resellers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5dba158 id: 1, name: "Reseller0">, #<Reseller:0x00007cf8a5dba018 id: 2, name: "Reseller1">, #<Reseller:0x00007cf8a5db9ed8 id: 3, name: "Reseller2">]
+sample-app(dev)> Reseller.destroy_all
+  Reseller Load (1.5ms)  SELECT "resellers".* FROM "resellers" /*application='SampleApp'*/
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  Reseller::HABTM_Manufacturers Delete All (1.2ms)  DELETE FROM "manufacturers_resellers" WHERE "manufacturers_resellers"."reseller_id" = 1 /*application='SampleApp'*/
+  Reseller Destroy (1.3ms)  DELETE FROM "resellers" WHERE "resellers"."id" = 1 /*application='SampleApp'*/
+  TRANSACTION (1.3ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  Reseller::HABTM_Manufacturers Delete All (1.8ms)  DELETE FROM "manufacturers_resellers" WHERE "manufacturers_resellers"."reseller_id" = 2 /*application='SampleApp'*/
+  Reseller Destroy (0.8ms)  DELETE FROM "resellers" WHERE "resellers"."id" = 2 /*application='SampleApp'*/
+  TRANSACTION (1.5ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Reseller::HABTM_Manufacturers Delete All (2.9ms)  DELETE FROM "manufacturers_resellers" WHERE "manufacturers_resellers"."reseller_id" = 3 /*application='SampleApp'*/
+  Reseller Destroy (1.1ms)  DELETE FROM "resellers" WHERE "resellers"."id" = 3 /*application='SampleApp'*/
+  TRANSACTION (1.3ms)  COMMIT /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5db7818 id: 1, name: "Reseller0">, #<Reseller:0x00007cf8a5db76d8 id: 2, name: "Reseller1">, #<Reseller:0x00007cf8a5db7598 id: 3, name: "Reseller2">]
+sample-app(dev)> Reseller.reset_primary_key
+=> "id"
+sample-app(dev)* 3.times do |x|
+sample-app(dev)*   Reseller.create(name: "Reseller#{x+1}")
+sample-app(dev)> end
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (2.7ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller1') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.0ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.4ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (1.4ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller2') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (0.9ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.4ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (1.6ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller3') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.2ms)  COMMIT /*application='SampleApp'*/
+=> 3
+sample-app(dev)> Reseller.all
+  Reseller Load (1.1ms)  SELECT "resellers".* FROM "resellers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5dba298 id: 4, name: "Reseller1">, #<Reseller:0x00007cf8a5dba158 id: 5, name: "Reseller2">, #<Reseller:0x00007cf8a5dba018 id: 6, name: "Reseller3">]
+sample-app(dev)> res1 = Reseller.first
+  Reseller Load (1.8ms)  SELECT "resellers".* FROM "resellers" ORDER BY "resellers"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x00007cf8a5dbb2d8 id: 4, name: "Reseller1">
+sample-app(dev)> res1.manufacturers
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> man1 = Manufacturer.first
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007cf8a52ead90 id: 1, name: "Toyota">
+sample-app(dev)> man1.resellers
+  Reseller Load (1.5ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> Manufacturer.count
+  Manufacturer Count (104.0ms)  SELECT COUNT(*) FROM "manufacturers" /*application='SampleApp'*/
+=> 3
+sample-app(dev)> Reseller.count
+  Reseller Count (1.9ms)  SELECT COUNT(*) FROM "resellers" /*application='SampleApp'*/
+=> 3
+sample-app(dev)> Reseller.delete_all
+  Reseller Delete All (14.6ms)  DELETE FROM "resellers" /*application='SampleApp'*/
+=> 3
+sample-app(dev)> Reseller.reset_primary_key
+=> "id"
+sample-app(dev)* (1..5).each do |x|
+sample-app(dev)*   Reseller.create(name: "Reseller#{x}")
+sample-app(dev)> end
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (2.8ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller1') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (13.4ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (2.1ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller2') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.2ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.5ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (1.8ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller3') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.4ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.7ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (2.6ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller4') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.4ms)  COMMIT /*application='SampleApp'*/
+  TRANSACTION (0.6ms)  BEGIN /*application='SampleApp'*/
+  Reseller Create (2.0ms)  INSERT INTO "resellers" ("name") VALUES ('Reseller5') RETURNING "id" /*application='SampleApp'*/
+  TRANSACTION (1.3ms)  COMMIT /*application='SampleApp'*/
+=> 1..5
+sample-app(dev)> Reseller.all
+  Reseller Load (1.4ms)  SELECT "resellers".* FROM "resellers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Reseller:0x00007cf8a5db7458 id: 7, name: "Reseller1">,
+ #<Reseller:0x00007cf8a5db7318 id: 8, name: "Reseller2">,
+ #<Reseller:0x00007cf8a5db71d8 id: 9, name: "Reseller3">,
+ #<Reseller:0x00007cf8a5db6f58 id: 10, name: "Reseller4">,
+ #<Reseller:0x00007cf8a5db6cd8 id: 11, name: "Reseller5">]
+sample-app(dev)> res7 = Reseller.find 7
+  Reseller Load (1.5ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 7 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x00007cf8a5db1058 id: 7, name: "Reseller1">
+sample-app(dev)> res8 = Reseller.find 8
+  Reseller Load (1.2ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 8 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x00007cf8a5db03d8 id: 8, name: "Reseller2">
+sample-app(dev)> res9 = Reseller.find 9
+  Reseller Load (1.2ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 9 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x00007cf8a5dc0008 id: 9, name: "Reseller3">
+sample-app(dev)> res10 = Reseller.find 10
+  Reseller Load (1.2ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 10 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x00007cf8a5dcd488 id: 10, name: "Reseller4">
+sample-app(dev)> res11 = Reseller.find 11
+  Reseller Load (1.1ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 11 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x00007cf8a5db7958 id: 11, name: "Reseller5">
+sample-app(dev)> toyota = Manufacturer.first
+  Manufacturer Load (1.9ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007cf8a5db7d18 id: 1, name: "Toyota">
+sample-app(dev)> honda = Manufacturer.last
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007cf8a5dba298 id: 4, name: "Suzuki">
+sample-app(dev)> toyota.resellers
+  Reseller Load (1.9ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> res7.manufacturers
+  Manufacturer Load (1.7ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 7 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> Reseller.all
+  Reseller Load (1.4ms)  SELECT "resellers".* FROM "resellers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Reseller:0x00007cf8a5db7e58 id: 7, name: "Reseller1">,
+ #<Reseller:0x00007cf8a5db7818 id: 8, name: "Reseller2">,
+ #<Reseller:0x00007cf8a5db76d8 id: 9, name: "Reseller3">,
+ #<Reseller:0x00007cf8a5db7598 id: 10, name: "Reseller4">,
+ #<Reseller:0x00007cf8a5db7458 id: 11, name: "Reseller5">]
+sample-app(dev)> toyota.resellers << ([res7, res9, res11])
+  TRANSACTION (0.5ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (1.6ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (7, 1) /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (0.6ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (9, 1) /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (0.6ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (11, 1) /*application='SampleApp'*/
+  TRANSACTION (13.1ms)  COMMIT /*application='SampleApp'*/
+  Reseller Load (1.6ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a788fb40 id: 7, name: "Reseller1">, #<Reseller:0x00007cf8a788fa00 id: 9, name: "Reseller3">, #<Reseller:0x00007cf8a788f780 id: 11, name: "Reseller5">]
+sample-app(dev)> toyota.resellers
+  Reseller Load (2.2ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5db5c98 id: 7, name: "Reseller1">, #<Reseller:0x00007cf8a5db5b58 id: 9, name: "Reseller3">, #<Reseller:0x00007cf8a5db5a18 id: 11, name: "Reseller5">]
+sample-app(dev)> honda.resellers << ([res7, res8, res10])
+  TRANSACTION (0.9ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (2.5ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (7, 4) /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (0.8ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (8, 4) /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (0.8ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (10, 4) /*application='SampleApp'*/
+  TRANSACTION (13.2ms)  COMMIT /*application='SampleApp'*/
+  Reseller Load (1.3ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5dcdfc8 id: 7, name: "Reseller1">, #<Reseller:0x00007cf8a5dcde88 id: 8, name: "Reseller2">, #<Reseller:0x00007cf8a5dcdc08 id: 10, name: "Reseller4">]
+sample-app(dev)> Manufacturer.all
+  Manufacturer Load (1.2ms)  SELECT "manufacturers".* FROM "manufacturers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x00007cf8a5db71d8 id: 1, name: "Toyota">, #<Manufacturer:0x00007cf8a5db7098 id: 2, name: "Honda">, #<Manufacturer:0x00007cf8a5db6f58 id: 4, name: "Suzuki">]
+sample-app(dev)> suzuki = Manufacturer.last
+  Manufacturer Load (1.3ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x00007cf8a5db44d8 id: 4, name: "Suzuki">
+sample-app(dev)> su
+(sample-app):39:in `<main>': undefined local variable or method `su' for main (NameError)
+
+su
+^^
+sample-app(dev)> suzuki
+=> #<Manufacturer:0x00007cf8a5db44d8 id: 4, name: "Suzuki">
+sample-app(dev)> suzuki.resellers
+  Reseller Load (1.9ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5db4b18 id: 7, name: "Reseller1">, #<Reseller:0x00007cf8a5db49d8 id: 8, name: "Reseller2">, #<Reseller:0x00007cf8a5db4898 id: 10, name: "Reseller4">]
+sample-app(dev)> honda.resellers
+  Reseller Load (1.6ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x00007cf8a5dceec8 id: 7, name: "Reseller1">, #<Reseller:0x00007cf8a5dcec48 id: 8, name: "Reseller2">, #<Reseller:0x00007cf8a5dceb08 id: 10, name: "Reseller4">]
+sample-app(dev)> exit
+yasir>> rails c
+starting ...............................  
+Loading development environment (Rails 8.0.2.1)
+sample-app(dev)> honda.resellers
+(sample-app):1:in `<main>': undefined local variable or method `honda' for main (NameError)
+
+honda.resellers
+^^^^^
+sample-app(dev)> honda = Manufacturer.find 2
+  Manufacturer Load (1.2ms)  SELECT "manufacturers".* FROM "manufacturers" WHERE "manufacturers"."id" = 2 LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000079ec0b55c2d0 id: 2, name: "Honda">
+sample-app(dev)> honda.resellers
+  Reseller Load (2.0ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> []
+sample-app(dev)> suzuki = Manufacturer.last
+  Manufacturer Load (1.6ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000079ec0b754d80 id: 4, name: "Suzuki">
+sample-app(dev)> suzuki.resellers
+  Reseller Load (1.7ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0ab84230 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0b753700 id: 8, name: "Reseller2">, #<Reseller:0x000079ec0b753340 id: 10, name: "Reseller4">]
+sample-app(dev)> toyota = Manufacturer.first
+  Manufacturer Load (1.3ms)  SELECT "manufacturers".* FROM "manufacturers" ORDER BY "manufacturers"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000079ec0b756680 id: 1, name: "Toyota">
+sample-app(dev)> toyota.resellers
+  Reseller Load (1.8ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0b7558c0 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0b755780 id: 9, name: "Reseller3">, #<Reseller:0x000079ec0b755640 id: 11, name: "Reseller5">]
+sample-app(dev)> Reseller.all
+  Reseller Load (1.1ms)  SELECT "resellers".* FROM "resellers" /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> 
+[#<Reseller:0x000079ec0b75c580 id: 7, name: "Reseller1">,
+ #<Reseller:0x000079ec0b75c440 id: 8, name: "Reseller2">,
+ #<Reseller:0x000079ec0b75c300 id: 9, name: "Reseller3">,
+ #<Reseller:0x000079ec0b75c1c0 id: 10, name: "Reseller4">,
+ #<Reseller:0x000079ec0b75c080 id: 11, name: "Reseller5">]
+sample-app(dev)> res7 = Reseller.find 7
+  Reseller Load (1.4ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 7 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x000079ec0d249d98 id: 7, name: "Reseller1">
+sample-app(dev)> res10 = Reseller.find 10
+  Reseller Load (1.3ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 10 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x000079ec0d25e108 id: 10, name: "Reseller4">
+sample-app(dev)> res11 = Reseller.find 11
+  Reseller Load (1.3ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 11 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x000079ec0d242e58 id: 11, name: "Reseller5">
+sample-app(dev)> honda
+=> #<Manufacturer:0x000079ec0b55c2d0 id: 2, name: "Honda">
+sample-app(dev)> honda.resellers << ([res7, res10, res11])
+  TRANSACTION (0.8ms)  BEGIN /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (1.0ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (7, 2) /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (1.2ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (10, 2) /*application='SampleApp'*/
+  Manufacturer::HABTM_Resellers Create (0.8ms)  INSERT INTO "manufacturers_resellers" ("reseller_id", "manufacturer_id") VALUES (11, 2) /*application='SampleApp'*/
+  TRANSACTION (13.4ms)  COMMIT /*application='SampleApp'*/
+  Reseller Load (1.2ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa26f50 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa26e10 id: 10, name: "Reseller4">, #<Reseller:0x000079ec0aa26cd0 id: 11, name: "Reseller5">]
+sample-app(dev)> toyota.resellers
+  Reseller Load (1.7ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa2b690 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa2b550 id: 9, name: "Reseller3">, #<Reseller:0x000079ec0aa2b410 id: 11, name: "Reseller5">]
+sample-app(dev)> honda.resellers
+  Reseller Load (1.7ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa27bd0 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa27a90 id: 10, name: "Reseller4">, #<Reseller:0x000079ec0aa27950 id: 11, name: "Reseller5">]
+sample-app(dev)> suzuki.resellers
+  Reseller Load (2.1ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa27e50 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa27bd0 id: 8, name: "Reseller2">, #<Reseller:0x000079ec0aa27a90 id: 10, name: "Reseller4">]
+sample-app(dev)> res7.manufacturers
+  Manufacturer Load (1.4ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 7 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa2a790 id: 1, name: "Toyota">, #<Manufacturer:0x000079ec0aa2a650 id: 2, name: "Honda">, #<Manufacturer:0x000079ec0aa2a510 id: 4, name: "Suzuki">]
+sample-app(dev)> res8 = Reseller.find 8
+  Reseller Load (1.1ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 8 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x000079ec0aa2b910 id: 8, name: "Reseller2">
+sample-app(dev)> res9 = Reseller.find 9
+  Reseller Load (1.1ms)  SELECT "resellers".* FROM "resellers" WHERE "resellers"."id" = 9 LIMIT 1 /*application='SampleApp'*/
+=> #<Reseller:0x000079ec0b759600 id: 9, name: "Reseller3">
+sample-app(dev)> res8.manufacturers
+  Manufacturer Load (2.1ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 8 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa2a650 id: 4, name: "Suzuki">]
+sample-app(dev)> toyota.resellers
+  Reseller Load (1.6ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 1 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa27950 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa27810 id: 9, name: "Reseller3">, #<Reseller:0x000079ec0aa276d0 id: 11, name: "Reseller5">]
+sample-app(dev)> res7.manufacturers
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 7 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa23c10 id: 1, name: "Toyota">, #<Manufacturer:0x000079ec0aa23ad0 id: 2, name: "Honda">, #<Manufacturer:0x000079ec0aa23990 id: 4, name: "Suzuki">]
+sample-app(dev)> honda.resellers
+  Reseller Load (1.8ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 2 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa2b550 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa2b410 id: 10, name: "Reseller4">, #<Reseller:0x000079ec0aa2b2d0 id: 11, name: "Reseller5">]
+sample-app(dev)> res8.manufacturers
+  Manufacturer Load (1.8ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 8 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa23990 id: 4, name: "Suzuki">]
+sample-app(dev)> res8
+=> #<Reseller:0x000079ec0aa2b910 id: 8, name: "Reseller2">
+sample-app(dev)> suzuki.resellers
+  Reseller Load (1.8ms)  SELECT "resellers".* FROM "resellers" INNER JOIN "manufacturers_resellers" ON "resellers"."id" = "manufacturers_resellers"."reseller_id" WHERE "manufacturers_resellers"."manufacturer_id" = 4 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Reseller:0x000079ec0aa2dd50 id: 7, name: "Reseller1">, #<Reseller:0x000079ec0aa2dc10 id: 8, name: "Reseller2">, #<Reseller:0x000079ec0aa2dad0 id: 10, name: "Reseller4">]
+sample-app(dev)> res9.manufacturers
+  Manufacturer Load (1.7ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 9 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa2f510 id: 1, name: "Toyota">]
+sample-app(dev)> res10.manufacturers
+  Manufacturer Load (1.8ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa235d0 id: 2, name: "Honda">, #<Manufacturer:0x000079ec0aa23490 id: 4, name: "Suzuki">]
+sample-app(dev)> res11.manufacturers
+  Manufacturer Load (1.8ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 11 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa2add0 id: 1, name: "Toyota">, #<Manufacturer:0x000079ec0aa2ac90 id: 2, name: "Honda">]
+sample-app(dev)> res10.name
+=> "Reseller4"
+sample-app(dev)> res10.manufacturers
+  Manufacturer Load (1.6ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0aa29110 id: 2, name: "Honda">, #<Manufacturer:0x000079ec0aa28fd0 id: 4, name: "Suzuki">]
+sample-app(dev)> res10.manufacturers.first
+  Manufacturer Load (1.6ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 ORDER BY "manufacturers"."id" ASC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000079ec0d25e388 id: 2, name: "Honda">
+sample-app(dev)> res10.manufacturers.second
+  Manufacturer Load (1.9ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 ORDER BY "manufacturers"."id" ASC LIMIT 1 OFFSET 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000079ec0aa2d490 id: 4, name: "Suzuki">
+sample-app(dev)> res10.manufacturers.third
+  Manufacturer Load (1.5ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 ORDER BY "manufacturers"."id" ASC LIMIT 1 OFFSET 2 /*application='SampleApp'*/
+=> nil
+sample-app(dev)> res10.manufacturers.last
+  Manufacturer Load (1.7ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 ORDER BY "manufacturers"."id" DESC LIMIT 1 /*application='SampleApp'*/
+=> #<Manufacturer:0x000079ec0aa2e9d0 id: 4, name: "Suzuki">
+sample-app(dev)> res10.manufacturers
+  Manufacturer Load (1.6ms)  SELECT "manufacturers".* FROM "manufacturers" INNER JOIN "manufacturers_resellers" ON "manufacturers"."id" = "manufacturers_resellers"."manufacturer_id" WHERE "manufacturers_resellers"."reseller_id" = 10 /* loading for pp */ LIMIT 11 /*application='SampleApp'*/
+=> [#<Manufacturer:0x000079ec0b75ec40 id: 2, name: "Honda">, #<Manufacturer:0x000079ec0b75eb00 id: 4, name: "Suzuki">]
+sample-app(dev)> 
