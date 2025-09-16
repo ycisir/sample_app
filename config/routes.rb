@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   resources :addresses
 
   root "users#list_users"
-  resources :products
+  resources :products do
+    collection do
+      get "premium"
+      get "by_price"
+    end
+  end
   get "users/list_users"
   get "users/show_new_template"
   get "users/display_other_template"

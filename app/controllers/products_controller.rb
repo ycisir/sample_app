@@ -10,6 +10,30 @@ class ProductsController < ApplicationController
   def show
   end
 
+  # def premium
+  #   @products = Product.where('price > 15000')
+  #   respond_to do |format|
+  #     format.json { render json: @products }
+  #   end
+  # end
+
+
+  # using scope
+  def premium
+    @products = Product.premium
+    respond_to do |format|
+      format.json { render json: @products }
+    end
+  end
+
+  def by_price
+    @products = Product.get_by_price(10000)
+    respond_to do |format|
+      format.json { render json: @products }
+    end
+  end
+
+
   # GET /products/new
   def new
     @product = Product.new
@@ -65,6 +89,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.expect(product: [ :name, :model, :price ])
+      params.expect(product: [ :name, :model, :price, :manufacturer_id ])
     end
 end
