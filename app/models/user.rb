@@ -1,19 +1,26 @@
 class User < ApplicationRecord
 
+	# association
+	# ===============================
+
 	has_one :address, as: :addressable, dependent: :destroy
 
 
-	# validates_length_of :first_name, in: (10..20)
 	attr_accessor :first_name, :last_name, :cityname, :country
+	
+	# validation
+	# ==============================
+
+	# validates_length_of :first_name, in: (10..20)
 
 	# CITIES = %W/London Birmingham Manchester Leeds Liverpool Newcastle Edinburgh/
 	# CITIES = {"Saudi Arabia" => ["Riyadh", "Dammam", "Jeddah"], "India" => ["Mumbai", "Nagpur", "Delhi"]}
 
-	validates :first_name, presence: { message: "should be present" }, exclusion: { in: %w/admin manager/, message: "provided is not accepted" },
+	#validates :first_name, presence: { message: "should be present" }, exclusion: { in: %w/admin manager/, message: "provided is not accepted" },
 	#format: { without: /NOSPAM/}
-	format: { with: /\A[A-Z]/}
-	validates :last_name, presence: { message: "should be present" }, format: { with: /\A[A-Z]/}
-	validates :age, presence: true, inclusion: { in: 18..55 }, numericality: true
+	#format: { with: /\A[A-Z]/}
+	#validates :last_name, presence: { message: "should be present" }, format: { with: /\A[A-Z]/}
+	#validates :age, presence: true, inclusion: { in: 18..55 }, numericality: true
 	# validates :gender, presence: true
 	# validates :city_id, presence: true
 
@@ -22,24 +29,38 @@ class User < ApplicationRecord
 
 
 	# custom validation
+	# ===============================
 	
-	validate :check_unique_name
+	#validate :check_unique_name
 
-	def check_unique_name
-		if User.exists?(name:[firstname, lastname].join(" "))
-			self.errors.add(:name, "already taken choose another")
-		end
+	#def check_unique_name
+	#	if User.exists?(name:[firstname, lastname].join(" "))
+	#		self.errors.add(:name, "already taken choose another")
+	#	end
+	#end
+
+	# ============================
+
+
+	# callbacks
+	# ==========================
+
+	before_save :set_fullname
+
+	def set_fullname
+		#debugger
+		self.name = [self.first_name, self.last_name].join(" ")
 	end
 
-
+	# ============================
 	def gender_string
 		self.gender == "F" ? "Female" : "Male"
 	end
 
 	# this method is used to store fullname in user table name column
-	def fullname
-		self.first_name + " " + self.last_name
-	end
+	#def fullname
+	#	self.first_name + " " + self.last_name
+	#end
 
 	def firstname
 		self.name.split(/\s/).first
