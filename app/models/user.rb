@@ -53,6 +53,11 @@ class User < ApplicationRecord
 	end
 
 	# ============================
+
+	def self.authenticate(username, password)
+		self.find_by_name(username).nil? ? false : true
+	end
+
 	def gender_string
 		self.gender == "F" ? "Female" : "Male"
 	end
@@ -73,6 +78,9 @@ class User < ApplicationRecord
 	def city_name
 		self.city_id.nil? ? "No data" : City.find(self.city_id).name
 	end
+
+
+
 
 end
 

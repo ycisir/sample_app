@@ -8,7 +8,11 @@ Rails.application.routes.draw do
       get "by_price"
     end
   end
+
   get "users/list_users"
+  get "users/login", as: "login"
+  post "users/get_login"
+  get "users/logout", as: "logout"
   get "users/show_new_template"
   get "users/display_other_template"
   get "users/new_user"

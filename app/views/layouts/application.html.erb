@@ -28,13 +28,22 @@
     <%# link_to_unless_current "New user", controller: :users, action: :new_user %>
 
     <%# relative url %>
-    <%= link_to_unless_current "New user", users_new_user_path %>
+    <%# link_to_unless_current "New user", users_new_user_path %>
     <%# link_to_unless_current "List users", controller: :users, action: :list_users %>
 
     <%# absolute url means including server name  %>
     <%= link_to_unless_current "List users", users_list_users_url %>
 
     <%= highlight('You searched for: rails', 'rails') %>
+
+    <% if current_user? %>
+      <%= link_to_unless_current "New user", users_new_user_path %>
+      <%= link_to_unless_current "Products", products_path %>
+      <%= link_to "Logout", logout_url %>
+    <% else %>
+      <%= link_to_unless_current "Login", login_url %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

@@ -64,7 +64,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_134536) do
     t.integer "age"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "points"
     t.string "gender"
     t.string "name"
     t.integer "city_id"

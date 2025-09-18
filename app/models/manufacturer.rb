@@ -19,7 +19,7 @@ class Manufacturer < ApplicationRecord
 
 
 	def remove_spaces
-		debugger
+		#debugger
 		puts "---------CALLED-----------"
 		#name.strip!
 		name.gsub!(" ", "")

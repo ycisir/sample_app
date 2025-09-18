@@ -1,5 +1,8 @@
 class ProductsController < ApplicationController
+  prepend_before_action :action1
   before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :check_login
+  after_action :write_log
 
   # GET /products or /products.json
   def index
@@ -84,11 +87,16 @@ class ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
+      Rails.logger.info("----------------SET PRODUCT------------------")
       @product = Product.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def product_params
       params.expect(product: [ :name, :model, :price, :manufacturer_id ])
+    end
+
+    def write_log
+      Rails.logger.info("Executing action from")
     end
 end

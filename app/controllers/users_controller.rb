@@ -1,5 +1,27 @@
 class UsersController < ApplicationController
 
+  # skip_before_action :check_login, only: [:login]
+  before_action :check_login, only: [:new_user]
+
+  def login
+  end
+
+  def get_login
+    user = User.authenticate(params[:username], params[:password])
+
+    if user
+      session[:user] = user
+      redirect_to root_path
+    else
+      render :login
+    end
+  end
+
+  def logout
+    session.destroy
+    redirect_to login_path
+  end
+
   def list_users
     @users = User.all
   end
@@ -31,7 +53,7 @@ class UsersController < ApplicationController
 
   def create_user
     @user = User.new(user_params)
-    @user.name = @user.fullname # bad way
+    # @user.name = @user.fullname # bad way
     if @user.save
       redirect_to action: :list_users
     else
