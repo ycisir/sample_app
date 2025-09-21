@@ -13,3 +13,8 @@ web app created for learning ruby on rails
 ### requirements
 - postgresql
 - ruby-3.3.9
+
+### resources
+- https://guides.rubyonrails.org/
+- https://api.rubyonrails.org/
+- youtube [knowledgehut upgrade]
