@@ -32,3 +32,5 @@ group :test do
   gem "guard-minitest"
   gem "minitest-reporters"
 end
+
+gem "bcrypt", "~> 3.1"
