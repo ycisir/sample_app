@@ -34,3 +34,6 @@ group :test do
 end
 
 gem "bcrypt", "~> 3.1"
+gem "faker", "~> 3.5"
+gem "will_paginate", "~> 3.3.1"
+gem "bootstrap-will_paginate", "~> 1.0"
