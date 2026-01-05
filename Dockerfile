@@ -14,3 +14,9 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 COPY . .
+
+ENV RAILS_ENV=production
+
+EXPOSE 3000
+
+CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"]
