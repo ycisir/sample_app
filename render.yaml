@@ -1,23 +1,26 @@
 databases:
   - name: sample_app_db
-  databaseName: sample_app_db
-  user: sample_app
-  plan: free
+    databaseName: sample_app_db
+    user: sample_app
+    plan: free
 
 services:
   - type: web
     name: sample_app
     runtime: ruby
     plan: free
+
     buildCommand: "./bin/render-build.sh"
     startCommand: "./bin/rails server"
-    
+
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: sample_app_db
           property: connectionString
-      - key: RAILS_MASTER_KEY
-        sync:false- key: WEB_CONCURRENCY
-        value: 2
 
+      - key: RAILS_MASTER_KEY
+        sync: false
+
+      - key: WEB_CONCURRENCY
+        value: "2"
