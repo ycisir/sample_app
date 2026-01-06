@@ -14,9 +14,3 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 COPY . .
-
-ENV RAILS_ENV=production
-
-EXPOSE 3000
-
-CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"]
