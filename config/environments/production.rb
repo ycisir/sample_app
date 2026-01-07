@@ -7,12 +7,12 @@ Rails.application.configure do
   host = 'sample-app-ysyg.onrender.com'
   config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
-    :address => 'smtp.gmail.com',
+    :address => 'smtp.mailersend.net',
     :port => '587',
     :authentication => :login,
-    :user_name => ENV['GMAIL_USERNAME'],
-    :password => ENV['GMAIL_PASSWORD'],
-    :enable_starttls_auto => true
+    :user_name => ENV['MAILERSEND_USERNAME'],
+    :password => ENV['MAILERSEND_PASSWORD'],
+    :enable_starttls_auto => true,
   }
 
   # Settings specified here will take precedence over those in config/application.rb.
