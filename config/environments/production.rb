@@ -1,20 +1,21 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # smtp setup
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.mailersend.net',
-    user_name: ENV['MAILERSEND_SMTP_USERNAME'],
-    password: ENV["MAILERSEND_SMTP_PASSWORD"],
-    port: '587',
-    authentication: :login
-  }
 
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = {
-    host: ENV['APP_HOST']
+  config.action_mailer.delivery_method = :smtp
+  host = 'sample-app-ysyg.onrender.com'
+  config.action_mailer.default_url_options = { host: host }
+  ActionMailer::Base.smtp_settings = {
+    :address => 'smtp.mailersend.net',
+    :port => '587',
+    :authentication => :plain,
+    :user_name => ENV['MAILERSEND_SMTP_USERNAME'],
+    :password => ENV['MAILERSEND_SMTP_PASSWORD'],
+    :domain => 'mailersend.net',
+    :enable_starttls_auto => true
   }
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
