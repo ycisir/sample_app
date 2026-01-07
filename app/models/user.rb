@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
 	# Sends activation email.
 	def send_activation_email
-		UserMailer.account_activation(self).deliver_now
+		UserMailer.account_activation(self).deliver_later
 	end
 
 	# Sets the password reset attributes.
@@ -31,7 +31,7 @@ class User < ApplicationRecord
 
 	# Sends password reset email.
 	def send_password_reset_email
-		UserMailer.password_reset(self).deliver_now
+		UserMailer.password_reset(self).deliver_later
 	end
 
 	# Returns the hash digest of the given string.
