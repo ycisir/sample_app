@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "no-reply@test-q3enl6ky39042vwr.mlsender.net"
+  default from: ENV["GMAIL_USERNAME"]
   layout "mailer"
 end
