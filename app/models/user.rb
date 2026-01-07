@@ -31,7 +31,7 @@ class User < ApplicationRecord
 
 	# Sends password reset email.
 	def send_password_reset_email
-		UserMailer.password_reset(self).deliver_later
+		UserMailer.password_reset(self).deliver_now
 	end
 
 	# Returns the hash digest of the given string.
