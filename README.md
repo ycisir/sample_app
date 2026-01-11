@@ -1,6 +1,3 @@
-# Sample App
-This project is built by following the Ruby on Rails Tutorial by Michael Hartl 7th Edition Book. 
-
 ### Prerequisites
 - Docker & Docker Compose installed for local development
 
